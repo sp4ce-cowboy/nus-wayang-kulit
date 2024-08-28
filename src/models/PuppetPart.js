@@ -56,6 +56,7 @@ export class PuppetPart {
         this.geometry = new THREE.BoxGeometry(this.width, this.height, this.depth);
         this.material = new THREE.MeshBasicMaterial({ map: this.texture });
         this.mesh = new THREE.Mesh(this.geometry, this.material);
+
     }
 
     onReady() {
