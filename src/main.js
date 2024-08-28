@@ -1,73 +1,128 @@
 import * as THREE from 'three';
 import './style.css';
+import { PuppetPart } from './models/PuppetPart.js';  
+import { setupEventListeners } from './common/EventHandlers.js'; 
 
 // Create a scene
 const scene = new THREE.Scene();
 
-// Create a shape (spehere)
-// const geometry = new THREE.SphereGeometry(3, 16, 16); // geometry is the shape of the object
-const geometry = new THREE.BoxGeometry(3, 3, 3); // geometry is the shape of the object
-const material = new THREE.MeshStandardMaterial({ color: 0x800080 }); // material is the color of the object
+// Create the body part
+const body = new PuppetPart('./assets/puppet_01/body.png');
 
-// mesh is the visible object that is created by combining the geometry and material together
-const mesh = new THREE.Mesh(geometry, material); 
- 
-scene.add(mesh);
+// When the geometry is ready, add the body to the scene and set its position
+body.onReady = () => {
+    body.addToScene(scene);
+    body.setPosition(0, 0, 0); // Set initial position
 
-//Size of window
+    // Movement limits
+    const limits = {
+        x: { min: -10, max: 10 },
+        y: { min: -5, max: 5 },
+        z: { min: -50, max: 35 },
+    };
+
+    // Pass all necessary components to the event handler
+    setupEventListeners({ body, renderer, camera }, limits);
+};
+
+// Size of window
 const sizes = {
     width: window.innerWidth,
     height: window.innerHeight
 };
 
-// Light
-// PointLight(color, intensity, distance, decay)
-// distance: distance of the light 
-// decay: decay of the light
-const pointlight = new THREE.PointLight(0xffffff, 500, 100);
-const ambientlight = new THREE.AmbientLight(0xffffff, 0.5);
-
-// position(x, y, z)
-// x: left(-) and right(+), y: down(-) and up(+), z: back(-) and front(+)
-pointlight.position.set(0, 10, 10);
-scene.add(pointlight);
-scene.add(ambientlight);
 
 // Create a camera
-// PerspectiveCamera(fov, aspect, near, far)
-// fov: field of view, aspect: aspect ratio, near: near clipping plane, far: far clipping plane
-// near and far clipping plane are used to remove objects that are too close or too far from the camera
 const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 1000);
-camera.position.z = 20;
+camera.position.z = 30;
 
 scene.add(camera);
 
 // Renderer
 const canvas = document.querySelector('.webgl');
-const renderer = new THREE.WebGLRenderer({canvas: canvas});
+const renderer = new THREE.WebGLRenderer({ canvas: canvas });
 renderer.setSize(sizes.width, sizes.height);
-renderer.render(scene, camera);
 
-//Resize Listener
-window.addEventListener('resize', () => {
-  //Update Sizes
-  //console.log('resized');
-  sizes.height = window.innerHeight
-  sizes.width = window.innerWidth;
-
-  //Update Camera
-  camera.aspect = sizes.width / sizes.height;
-  camera.updateProjectionMatrix();
-  renderer.setSize(sizes.width, sizes.height);
-
-})
-
-// Animate on keyboard input
+// Animation loop
 function animate() {
     requestAnimationFrame(animate);
-    mesh.rotation.x += 0.01;
-    mesh.rotation.y += 0.01;
     renderer.render(scene, camera);
 }
 
 animate();
+
+/*
+import * as THREE from 'three';
+import './style.css';
+import { PuppetPart } from './models/PuppetPart.js';  
+import { setupEventListeners } from './common/EventHandlers.js'; 
+
+// Create a scene
+const scene = new THREE.Scene();
+
+// Create the body part
+const body = new PuppetPart('./assets/puppet_01/body.png');
+
+// When the geometry is ready, add the body to the scene and set its position
+body.onReady = () => {
+    body.addToScene(scene);
+    body.setPosition(0, 0, 0); // Set initial position
+
+    // Now create the arm and hand
+    const arm = new PuppetPart('./assets/puppet_01/arm.png');
+    arm.onReady = () => {
+        arm.addToScene(scene);
+
+        // Position arm relative to body
+        const bodyWidth = body.width || 1;  // Use body's width to calculate relative position
+        const bodyHeight = body.height || 1;
+        arm.setPosition(body.mesh.position.x - bodyWidth / 4 - 1,
+            body.mesh.position.y + bodyHeight / 8 - 1, 0.5);
+
+        // Create the hand part
+        const hand = new PuppetPart('./assets/puppet_01/hand.png');
+        hand.onReady = () => {
+            hand.addToScene(scene);
+
+            // Position hand relative to arm
+            const armHeight = arm.height || 1;  // Use arm's height to calculate relative position
+            hand.setPosition(arm.mesh.position.x - 1, arm.mesh.position.y - armHeight / 2 - 1.5, 0.5);
+        };
+    };
+};
+
+// Size of window
+const sizes = {
+    width: window.innerWidth,
+    height: window.innerHeight
+};
+
+// Create a camera
+const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 1000);
+camera.position.z = 30;
+
+scene.add(camera);
+
+// Renderer
+const canvas = document.querySelector('.webgl');
+const renderer = new THREE.WebGLRenderer({ canvas: canvas });
+renderer.setSize(sizes.width, sizes.height);
+
+// Movement limits
+const limits = {
+    x: { min: -10, max: 10 },
+    y: { min: -5, max: 5 },
+    z: { min: -50, max: 35 },
+};
+
+// Pass all necessary components to the event handler
+setupEventListeners({ body, renderer, camera }, limits);
+
+// Animation loop
+function animate() {
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+}
+
+animate();
+*/
