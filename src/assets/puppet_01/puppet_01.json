@@ -1,0 +1,36 @@
+{
+    "puppetName": "Example Puppet",
+    "bodyParts": {
+      "body": {
+        "image": "path/to/body.png",
+        "size": { "width": 200, "height": 400 },
+        "hinges": {
+          "rightArm": { "x": 50, "y": -100 },
+          "leftArm": { "x": -50, "y": -100 }
+        },
+        "origin": { "x": 0, "y": 0 }
+      },
+      "rightArm": {
+        "image": "path/to/rightArm.png",
+        "size": { "width": 50, "height": 200 },
+        "hinges": {
+          "hand": { "x": 0, "y": -100 },
+          "stick": { "x": 0, "y": 100 }
+        },
+        "connectedTo": "body",
+        "connectedAt": "rightArm"
+      },
+      "hand": {
+        "image": "path/to/hand.png",
+        "size": { "width": 20, "height": 50 },
+        "connectedTo": "rightArm",
+        "connectedAt": "hand"
+      },
+      "stick": {
+        "image": "path/to/stick.png",
+        "size": { "width": 5, "height": 300 },
+        "connectedTo": "rightArm",
+        "connectedAt": "stick"
+      }
+    }
+  }
