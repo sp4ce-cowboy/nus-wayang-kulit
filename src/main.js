@@ -6,11 +6,11 @@ const scene = new THREE.Scene();
 
 // Load the texture (your image)
 const textureLoader = new THREE.TextureLoader();
-const texture = textureLoader.load('arm.png');
+const texture = textureLoader.load('assets/puppet_01/body.png');
 
 // Create a plane geometry (rectangle)
 const geometry = new THREE.BoxGeometry(19.7, 39.6, 0.5); 
-const material = new THREE.MeshBasicMaterial({ map: texture }); // Apply the texture to the material
+const material = new THREE.MeshBasicMaterial({ map: texture }); // Atpply the texture to the material
 
 // mesh is the visible object that is created by combining the geometry and material together
 const mesh = new THREE.Mesh(geometry, material);
@@ -64,11 +64,11 @@ document.addEventListener('keydown', (event) => {
             break;
         case '.': 
             event.preventDefault();
-            mesh.position.z = Math.max(limits.z.min, mesh.position.z + 1);
+            mesh.position.z = mesh.position.z + 1;
             break;
         case ',':
             event.preventDefault();
-            mesh.position.z = Math.min(limits.z.max, mesh.position.z - 1);
+            mesh.position.z = mesh.position.z - 1;
             break;
         case 'a': // 'a' key rotates left
             mesh.rotation.z += 0.1;
