@@ -9,10 +9,14 @@ const scene = new THREE.Scene();
 const geometry = new THREE.BoxGeometry(3, 3, 3); // geometry is the shape of the object
 const material = new THREE.MeshStandardMaterial({ color: 0x800080 }); // material is the color of the object
 
+// Create axis labels
+const axesHelper = new THREE.AxesHelper(100);
+
 // mesh is the visible object that is created by combining the geometry and material together
 const mesh = new THREE.Mesh(geometry, material); 
  
 scene.add(mesh);
+scene.add(axesHelper);
 
 //Size of window
 const sizes = {
@@ -38,7 +42,11 @@ scene.add(ambientlight);
 // fov: field of view, aspect: aspect ratio, near: near clipping plane, far: far clipping plane
 // near and far clipping plane are used to remove objects that are too close or too far from the camera
 const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 1000);
+camera.position.x = 20;
 camera.position.z = 20;
+camera.position.y = 20;
+camera.lookAt(mesh.position);
+
 
 scene.add(camera);
 
