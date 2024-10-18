@@ -48,8 +48,14 @@ import { INVERSE_MOTION_THRESHOLD,INVERSE_ROTATION_THRESHOLD, MOTION_THRESHOLD, 
                 body.rotate(0, INVERSE_ROTATION_THRESHOLD, 0);
                 break;
             case 'q':
-                body.setPosition(0, 0, 0);
-                body.setRotation(0, 0, 0);
+                body.setPosition(-3, 4, 0);  // Corrected position
+                body.setRotation(1.6, 0, 0); // Corrected rotation
+                break;
+            case 'z': // Anticlockwise rotation
+                body.rotate(ROTATION_THRESHOLD, 0, 0); // Rotate around X-axis anticlockwise
+                break;
+            case 'x': // Clockwise rotation
+                body.rotate(INVERSE_ROTATION_THRESHOLD, 0, 0); // Rotate around X-axis clockwise
                 break;
         }
     });
