@@ -13,6 +13,9 @@ const body = new PuppetPart('./assets/puppet_01/body.png');
 body.onReady = () => {
     body.addToScene(scene);
     body.setPosition(0, 0, 0); // Set initial position
+    
+    body.setPosition(-3, 4, 0); // Adjusted position offset depending on 3d object
+    body.setRotation(1.6, 0, 0); // Adjusted rotation (in radians) depending on 3d object
 
     // Movement limits
     const limits = {
