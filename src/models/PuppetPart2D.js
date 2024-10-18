@@ -13,7 +13,7 @@ import * as THREE from 'three';
  * - Manual Overrides: Can still pass in custom width and height values when creating
  * a PuppetPart to override the auto-determined dimensions.
     */
-export class PuppetPart {
+export class PuppetPart2D {
     constructor(imagePath, width = null, height = null, depth = 0.5) {
         this.textureLoader = new THREE.TextureLoader();
         this.imagePath = imagePath;
