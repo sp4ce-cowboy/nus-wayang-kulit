@@ -13,27 +13,27 @@ import { INVERSE_MOTION_THRESHOLD,INVERSE_ROTATION_THRESHOLD, MOTION_THRESHOLD, 
         switch (event.key) {
             case 'ArrowLeft':
                 event.preventDefault();
-                body.move(Math.max(limits.x.min, body.mesh.position.x - 1) - body.mesh.position.x, 0, 0);
+                body.move(Math.max(limits.x.min, body.mesh.position.x - MOTION_THRESHOLD) - body.mesh.position.x, 0, 0);
                 break;
             case 'ArrowRight':
                 event.preventDefault();
-                body.move(Math.min(limits.x.max, body.mesh.position.x + 1) - body.mesh.position.x, 0, 0);
+                body.move(Math.min(limits.x.max, body.mesh.position.x + MOTION_THRESHOLD) - body.mesh.position.x, 0, 0);
                 break;
             case 'ArrowUp':
                 event.preventDefault();
-                body.move(0, Math.min(limits.y.max, body.mesh.position.y + 1) - body.mesh.position.y, 0);
+                body.move(0, Math.min(limits.y.max, body.mesh.position.y + MOTION_THRESHOLD) - body.mesh.position.y, 0);
                 break;
             case 'ArrowDown':
                 event.preventDefault();
-                body.move(0, Math.max(limits.y.min, body.mesh.position.y - 1) - body.mesh.position.y, 0);
+                body.move(0, Math.max(limits.y.min, body.mesh.position.y - MOTION_THRESHOLD) - body.mesh.position.y, 0);
                 break;
             case '.':
                 event.preventDefault();
-                body.move(0, 0, Math.min(limits.z.max, body.mesh.position.z + 1) - body.mesh.position.z);
+                body.move(0, 0, Math.min(limits.z.max, body.mesh.position.z + MOTION_THRESHOLD) - body.mesh.position.z);
                 break;
             case ',':
                 event.preventDefault();
-                body.move(0, 0, Math.max(limits.z.min, body.mesh.position.z - 1) - body.mesh.position.z);
+                body.move(0, 0, Math.max(limits.z.min, body.mesh.position.z - MOTION_THRESHOLD) - body.mesh.position.z);
                 break;
             case 'a':
                 body.rotate(0, 0, MOTION_THRESHOLD);
@@ -48,8 +48,9 @@ import { INVERSE_MOTION_THRESHOLD,INVERSE_ROTATION_THRESHOLD, MOTION_THRESHOLD, 
                 body.rotate(0, INVERSE_ROTATION_THRESHOLD, 0);
                 break;
             case 'q':
-                body.setPosition(-3, 4, 0);  // Corrected position
-                body.setRotation(1.6, 0, 0); // Corrected rotation
+                //body.setPosition(-3, 4, 0);  // Corrected position
+                //body.setRotation(1.6, 0, 0); // Corrected rotation
+                body.setPosition(0, 0, 0); // Set initial position
                 break;
             case 'z': // Anticlockwise rotation
                 body.rotate(ROTATION_THRESHOLD, 0, 0); // Rotate around X-axis anticlockwise

@@ -32,6 +32,8 @@ export class PuppetPart3D {
                         // Center the mesh within the group
                         this.mesh.position.set(this.mesh.position.x, this.mesh.position.y, this.mesh.position.z);
 
+                        //this.mesh.position.set(0, 0, 0);
+
                         // Add the mesh to the group (pivot)
                         this.group.add(this.mesh);
 
@@ -48,6 +50,10 @@ export class PuppetPart3D {
                 console.error('Error loading the MTL file:', error);
             }
         );
+    }
+
+    onReady() {
+        // This method can be overridden when the model is ready
     }
 
     addToScene(scene) {
