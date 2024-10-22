@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import './style.css';
 import { PuppetPart3D } from './models/PuppetPart3D.js';  
 import { PuppetPartGLB } from './models/PuppetPartGLB.js';  
-import { setupEventListeners } from './common/EventHandlersIK.js';
+import { setupEventListeners } from './common/EventHandlers.js';
 import { GLTFLoader } from 'three-stdlib';
 
 // Create a scene

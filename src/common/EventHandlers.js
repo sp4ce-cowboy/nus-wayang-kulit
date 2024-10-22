@@ -44,12 +44,12 @@ export function setupEventListeners({ body, armPivot, handPivot, renderer, camer
             'ArrowLeft',
             'ArrowRight'
         ];
-        
+
         if (keysToPrevent.includes(event.key)) {
             event.preventDefault(); // Prevent default scroll behavior
         }
 
-        if (event.key === 'q') {
+        if (event.key === 'x') {
             resetAll(body, armPivot, handPivot); // Reset everything on 'q' press
         } else {
             keyState[event.key] = true; // Mark the key as pressed
@@ -129,28 +129,28 @@ function animate(body, armPivot, handPivot, limits) {
     if (keyState['d']) {
         body.rotate(0, 0, INVERSE_ROTATION_THRESHOLD);
     }
-    if (keyState['w']) {
+    if (keyState['q']) {
         body.rotate(0, ROTATION_THRESHOLD, 0);
     }
-    if (keyState['s']) {
+    if (keyState['e']) {
         body.rotate(0, INVERSE_ROTATION_THRESHOLD, 0);
     }
-    if (keyState['z']) {
+    if (keyState['w']) {
         body.rotate(ROTATION_THRESHOLD, 0, 0);
     }
-    if (keyState['x']) {
+    if (keyState['s']) {
         body.rotate(INVERSE_ROTATION_THRESHOLD, 0, 0);
     }
-    if (keyState['r']) {
+    if (keyState['h']) {
         armPivot.rotation.y -= ROTATION_THRESHOLD;
     }
-    if (keyState['t']) {
+    if (keyState['l']) {
         armPivot.rotation.y += ROTATION_THRESHOLD;
     }
-    if (keyState['f']) {
+    if (keyState['j']) {
         handPivot.rotation.y -= ROTATION_THRESHOLD;
     }
-    if (keyState['g']) {
+    if (keyState['k']) {
         handPivot.rotation.y += ROTATION_THRESHOLD;
     }
 }
