@@ -8,7 +8,7 @@
 const keyState = {};
 import * as THREE from 'three';
 
-import { 
+import {
     INVERSE_MOTION_THRESHOLD, 
     INVERSE_ROTATION_THRESHOLD, 
     MOTION_THRESHOLD, 
@@ -37,6 +37,12 @@ const initialState = {
 export function setupEventListeners({ body, armPivot, handPivot, renderer, camera }, limits) {
     // Track keydown events
     document.addEventListener('keydown', (event) => {
+        // Prevent default scrolling for arrow keys and others if necessary
+        const keysToPrevent = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+        if (keysToPrevent.includes(event.key)) {
+            event.preventDefault(); // Prevent default scroll behavior
+        }
+        
         if (event.key === 'q') {
             resetAll(body, armPivot, handPivot); // Reset everything on 'q' press
         } else {
@@ -112,10 +118,10 @@ function animate(body, armPivot, handPivot, limits) {
         body.move(0, 0, Math.max(limits.z.min, body.mesh.position.z - MOTION_THRESHOLD) - body.mesh.position.z);
     }
     if (keyState['a']) {
-        body.rotate(0, 0, MOTION_THRESHOLD);
+        body.rotate(0, 0, ROTATION_THRESHOLD);
     }
     if (keyState['d']) {
-        body.rotate(0, 0, INVERSE_MOTION_THRESHOLD);
+        body.rotate(0, 0, INVERSE_ROTATION_THRESHOLD);
     }
     if (keyState['w']) {
         body.rotate(0, ROTATION_THRESHOLD, 0);

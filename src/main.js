@@ -7,7 +7,8 @@ import { GLTFLoader } from 'three-stdlib';
 
 // Create a scene
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x333333); // Dark grey background
+//scene.background = new THREE.Color(0x333333); // Dark grey background
+scene.background = new THREE.Color(0x000000); // Black background
 
 // Add ambient light (general soft light)
 const ambientLight = new THREE.AmbientLight(0xffffff, 3); // Color and intensity
@@ -34,7 +35,7 @@ const body = new PuppetPart3D(
 const hand = new PuppetPart3D(
     './assets/puppet_01/shadow_obj/Wayang_kulit_puppet_h_1019104325.obj',
     './assets/puppet_01/shadow_obj/model.mtl',
-    0.08, 0.08, 0.08
+    0.08, 0.08, 0.07
 );
 
 const arm = new PuppetPart3D(
