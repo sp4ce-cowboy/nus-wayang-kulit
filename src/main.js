@@ -28,19 +28,19 @@ scene.add(spotLight);
 
 // Create the body part with OBJ and MTL files
 const body = new PuppetPart3D(
-    './assets/puppet_01/body_with_colour.obj',
-    './assets/puppet_01/body_with_colour.mtl'
+    './assets/puppet_01/models/body/body.obj',
+    './assets/puppet_01/models/body/body.mtl'
 );
 
 const hand = new PuppetPart3D(
-    './assets/puppet_01/shadow_obj/Wayang_kulit_puppet_h_1019104325.obj',
-    './assets/puppet_01/shadow_obj/model.mtl',
+    './assets/puppet_01/models/hand/hand.obj',
+    './assets/puppet_01/models/hand/hand.mtl',
     0.08, 0.08, 0.07
 );
 
 const arm = new PuppetPart3D(
-    './assets/puppet_01/shadow_obj/Wayang_kulit_puppet_a_1021105200_obj/Wayang_kulit_puppet_a_1021105200.obj',
-    './assets/puppet_01/shadow_obj/Wayang_kulit_puppet_a_1021105200_obj/model.mtl',
+    './assets/puppet_01/models/arm/arm.obj',
+    './assets/puppet_01/models/arm/arm.mtl',
     0.07, 0.07, 0.05
 );
 
@@ -72,8 +72,8 @@ body.onReady = () => {
             handPivot.add(hand.mesh); // Add the hand mesh to its pivot
 
             // Step 3: Position the hand mesh relative to the arm
-            hand.mesh.position.set(-0.025, 0, 0.05); // Adjust relative to arm
-            handPivot.position.set(0, 0, 0.12); // Adjust as necessary
+            hand.mesh.position.set(-0.025, 0.01, 0.055); // Adjust relative to arm
+            handPivot.position.set(0, 0, 0.105); // Adjust as necessary
             
             // Step 4: Attach the hand pivot to the arm pivot
             armPivot.add(handPivot); // Nest handPivot inside armPivot
