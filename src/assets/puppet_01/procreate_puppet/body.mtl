@@ -1,6 +1,6 @@
 # Apple ModelI/O MTL File: body.mtl
 
-newmtl
+newmtl Material.001
 	map_Kd -color.png
 	Kd 1 1 1
 	Ka 0 0 0
