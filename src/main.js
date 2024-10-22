@@ -18,15 +18,14 @@ const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
 directionalLight.position.set(10, 10, 10); // Position the light source
 scene.add(directionalLight);
 
-// add spotlight
-// Update the spotlight color
 /*
+// Add spotlight
 const spotLight = new THREE.SpotLight(0xffffff, 1);  // Use white light
 spotLight.position.set(0, 0, 5);  // Adjust position
 scene.add(spotLight);
 */
-// Create the body part with OBJ and MTL files
 
+// Create the body part with OBJ and MTL files
 const body = new PuppetPart3D(
     './assets/puppet_01/body_with_colour.obj',
     './assets/puppet_01/body_with_colour.mtl'
@@ -44,63 +43,26 @@ const arm = new PuppetPart3D(
     0.07, 0.07, 0.05
 );
 
-
-//Loading the GLB file
-/*const body = new PuppetPartGLB(
-    './assets/puppet_01/shadowPuppet.glb',
-);*/
-
-// When the model is ready, add it to the scene and set its position
-/*body.onReady = () => {
-    body.addToScene(scene);
-
-    arm.onReady = () => {
-        // Add the arm to the body (affix the arm to the body)
-        body.mesh.add(arm.mesh);
-
-        // Set the arm's position relative to the body
-        arm.setPosition(-0.1, 0.02, -0.02);  // Example offset (adjust as needed)
-        arm.setRotation(-1.7, -1.7, -0.2); // Adjusted rotation (in radians)
-    };
-
-    body.setPosition(0, 0, 0); // Set initial position
-    //body.setPosition(-3, 4, 0); // Adjusted position
-    body.setRotation(1.7, 0, 0); // Adjusted rotation (in radians)
-
-
-    const limits = {
-        x: { min: -10, max: 10 },
-        y: { min: -5, max: 5 },
-        z: { min: -50, max: 35 },
-    };
-
-    setupEventListeners({ body, renderer, camera }, limits);
-};*/
-
 const armPivot = new THREE.Group(); // Group to act as the pivot point for the arm
 const handPivot = new THREE.Group(); // Group to act as the pivot point for the hand
+
 body.onReady = () => {
-    body.addToScene(scene); // Add the body to the scene
+    body.addToScene(scene);
 
     arm.onReady = () => {
         const pivotHelper = new THREE.AxesHelper(0.1);
         armPivot.add(pivotHelper); 
         armPivot.add(arm.mesh); // Add the arm to the pivot group
 
-        // These coordinates move the arm to a position relative to the armPivot mesh
+        // Move the arm to a position relative to the armPivot mesh
         // (left right; in out; up down)
-        // arm.mesh.position.set(-0.025, 0, 0.05);
         arm.mesh.position.set(0, 0, 0.05);
 
         // Move the arm together with the pivot
-        // (left right; in out; up down)
-        // armPivot.position.set(-0.08, 0.01, -0.07);
-        armPivot.position.set(-0.08, 0.01, -0.07); // Adjust as necessary
-        //armPivot.position.set(-0.1, 0.02, -0.02);
+        armPivot.position.set(-0.08, 0.01, -0.07);
 
         body.mesh.add(armPivot); // Attach the pivot group to the body
-
-        arm.setRotation(-1.7, -1.7, -0.2); // Adjust initial rotation of the arm if needed
+        arm.setRotation(-1.7, -1.7, -0.2); // Adjust initial rotation of the arm
 
             // Load the hand and attach it to the arm
         hand.onReady = () => {
@@ -110,12 +72,11 @@ body.onReady = () => {
 
             // Step 3: Position the hand mesh relative to the arm
             hand.mesh.position.set(-0.025, 0, 0.05); // Adjust relative to arm
-
             handPivot.position.set(0, 0, 0.12); // Adjust as necessary
+            
             // Step 4: Attach the hand pivot to the arm pivot
             armPivot.add(handPivot); // Nest handPivot inside armPivot
-
-            hand.setRotation(-1.7, -1.7, -0.2); // Adjust initial rotation of the arm if needed
+            hand.setRotation(-1.7, -1.7, -0.2); // Adjust initial rotation of the hand
         };  
     };
 
@@ -145,8 +106,6 @@ const canvas = document.querySelector('.webgl');
 const renderer = new THREE.WebGLRenderer({ canvas: canvas });
 renderer.setSize(sizes.width, sizes.height);
 renderer.outputEncoding = THREE.sRGBEncoding;
-//renderer.toneMapping = THREE.ACESFilmicToneMapping;
-//renderer.toneMappingExposure = 1;
 
 // Animation loop
 function animate() {
