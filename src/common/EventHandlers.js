@@ -38,11 +38,17 @@ export function setupEventListeners({ body, armPivot, handPivot, renderer, camer
     // Track keydown events
     document.addEventListener('keydown', (event) => {
         // Prevent default scrolling for arrow keys and others if necessary
-        const keysToPrevent = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+        const keysToPrevent = [
+            'ArrowUp',
+            'ArrowDown',
+            'ArrowLeft',
+            'ArrowRight'
+        ];
+        
         if (keysToPrevent.includes(event.key)) {
             event.preventDefault(); // Prevent default scroll behavior
         }
-        
+
         if (event.key === 'q') {
             resetAll(body, armPivot, handPivot); // Reset everything on 'q' press
         } else {
