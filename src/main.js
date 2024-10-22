@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import './style.css';
 import { PuppetPart3D } from './models/PuppetPart3D.js';  
 import { PuppetPartGLB } from './models/PuppetPartGLB.js';  
-import { setupEventListeners } from './common/EventHandlers.js';
+import { setupEventListeners } from './common/EventHandlersIK.js';
 import { GLTFLoader } from 'three-stdlib';
 
 // Create a scene
@@ -90,7 +90,8 @@ body.onReady = () => {
         z: { min: -50, max: 35 },
     };
 
-    setupEventListeners({ body, armPivot, handPivot, renderer, camera }, limits); // Pass the pivot to event listeners
+    // Pass the pivot to event listeners
+    setupEventListeners({ body, armPivot, handPivot, renderer, camera }, limits);
 };
 
 // Set up the camera
