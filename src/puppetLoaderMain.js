@@ -1,9 +1,12 @@
 import * as THREE from 'three';
+import './style.css';
 import { PuppetPart3D } from './models/PuppetPart3D.js';
+import { setupEventListeners } from './common/EventHandlers.js';
+
 
 // Function to load the JSON configuration
 async function loadPuppetConfig(puppetName) {
-    const response = await fetch(`./${puppetName}.json`);
+    const response = await fetch(`./assets/${puppetName}/${puppetName}.json`);
     return await response.json();
 }
 
@@ -46,7 +49,7 @@ async function init(puppetName) {
 }
 
 // Call the init function with the puppet name
-init('puppet_02');
+init("puppet_01");
 
 // Set up renderer and camera (existing code remains unchanged)
 const scene = new THREE.Scene();
