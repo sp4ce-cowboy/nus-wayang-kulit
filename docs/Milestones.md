@@ -63,3 +63,11 @@ Milestone achieved when:
 
 First objective completed with a,d keys. Flat nature is visible during rotation. Both sides have the body.mtl applied, but the wayang kulit stick is visible on both sides as the .png image provided only captures one side. 2 separate images are required. The 8-DOF allows for the puppet to be viewed from any angle in space, and the maintenance of the flat form can be viewed. Last objective is also completed, both user controls and simulations allow for easy manipulation of the puppet's 3D orientation. The function for this is built into threejs so a separate function would not be required (but can be written anyway).
 
+### Moving Forward
+Some things to consider are:
+- Inverse kinematics 
+- A more refined 3d-model
+
+From this point onwards, the interface is mostly completed and any further progress would most likely have to do with integrating with the ML side of things.
+
+
