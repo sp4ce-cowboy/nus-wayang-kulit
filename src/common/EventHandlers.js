@@ -1,19 +1,20 @@
  /**
-  * This file contains all the EventHandlers which include the event listeners for 
-  * the keyboard and window resize events, and any other event listeners that 
-  * may be needed in the future.
-  */
-
-// Track key states
-const keyState = {};
-import * as THREE from 'three';
-
-import {
+ * This file contains all the EventHandlers which include the event listeners for 
+ * the keyboard and window resize events, and any other event listeners that 
+ * may be needed in the future.
+ */
+ 
+ // Track key states
+ const keyState = {};
+ import * as THREE from 'three';
+ 
+ import {
     INVERSE_MOTION_THRESHOLD, 
     INVERSE_ROTATION_THRESHOLD, 
     MOTION_THRESHOLD, 
-    ROTATION_THRESHOLD 
+    ROTATION_THRESHOLD,
 } from './Constants.js';
+
 
 // Store initial positions and rotations
 const initialState = {
@@ -21,7 +22,7 @@ const initialState = {
         position: new THREE.Vector3(0, 0, 0),
         rotation: new THREE.Euler(1.7, 0, 0)
     },
-
+    
     armPivot: {
         position: new THREE.Vector3(-0.08, 0.01, -0.07),
         rotation: new THREE.Euler(0, 0, 0)
@@ -44,30 +45,30 @@ export function setupEventListeners({ body, armPivot, handPivot, renderer, camer
             'ArrowLeft',
             'ArrowRight'
         ];
-
+        
         if (keysToPrevent.includes(event.key)) {
             event.preventDefault(); // Prevent default scroll behavior
         }
-
+        
         if (event.key === 'x') {
             resetAll(body, armPivot, handPivot); // Reset everything on 'q' press
         } else {
             keyState[event.key] = true; // Mark the key as pressed
         }
     });
-
+    
     // Track keyup events
     document.addEventListener('keyup', (event) => {
         keyState[event.key] = false; // Mark the key as released
     });
-
+    
     // Handle window resize events
     window.addEventListener('resize', () => {
         renderer.setSize(window.innerWidth, window.innerHeight);
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
     });
-
+    
     // Start the animation loop
     animate(body, armPivot, handPivot, limits);
 }
@@ -78,7 +79,7 @@ function resetAll(body, armPivot, handPivot) {
     for (const key in keyState) {
         keyState[key] = false;
     }
-
+    
     // Reset body position and rotation
     body.setPosition(
         initialState.body.position.x,
@@ -90,11 +91,11 @@ function resetAll(body, armPivot, handPivot) {
         initialState.body.rotation.y,
         initialState.body.rotation.z
     );
-
+    
     // Reset armPivot position and rotation
     armPivot.position.copy(initialState.armPivot.position);
     armPivot.rotation.copy(initialState.armPivot.rotation);
-
+    
     // Reset handPivot position and rotation
     handPivot.position.copy(initialState.handPivot.position);
     handPivot.rotation.copy(initialState.handPivot.rotation);
@@ -103,7 +104,7 @@ function resetAll(body, armPivot, handPivot) {
 // Animation loop to apply transformations continuously
 function animate(body, armPivot, handPivot, limits) {
     requestAnimationFrame(() => animate(body, armPivot, handPivot, limits));
-
+    
     // Apply movements and rotations based on key states
     if (keyState['ArrowLeft']) {
         body.move(Math.max(limits.x.min, body.mesh.position.x - MOTION_THRESHOLD) - body.mesh.position.x, 0, 0);

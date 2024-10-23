@@ -3,7 +3,10 @@ import './style.css';
 import { PuppetPart3D } from './models/PuppetPart3D.js';
 import { setupEventListeners } from './common/EventHandlers.js';
 import { runTestSequence } from '../tests/Simulation.js';
-
+import { 
+    IS_SIMULATION_ACTIVE,
+    IS_MANUAL_PUPPET_INPUT
+} from './common/ControlPanel.js';
 
 // Function to load the JSON configuration
 async function loadPuppetConfig(puppetName) {
@@ -54,26 +57,27 @@ async function init(puppetName) {
             };
         };
         
-        setupEventListeners({
-            body, armPivot, handPivot, renderer, camera
-        }, config.limits);
-
+        setupEventListeners({ body, armPivot, handPivot, renderer, camera }, config.limits);
+        
     } catch (error) {
         console.error(error);
         alert(`Failed to load puppet: ${puppetName}`);
     }
 }
 
-const puppetName = 'puppet_01';  // Hardcoded puppet name
-init(puppetName)
-//const puppetName = prompt("Enter the puppet name (e.g., 'puppet_01'):");
+if (IS_MANUAL_PUPPET_INPUT) {
+    const puppetName = prompt("Enter the puppet name (e.g., 'puppet_01'):");
+    
+    if (puppetName) {
+        init(puppetName);
+    } else {
+        alert('Puppet name is required!');
+    }
 
-/*if (puppetName) {
-    init(puppetName);
 } else {
-    alert('Puppet name is required!');
-}*/
-
+    const puppetName = 'puppet_01'; // Default puppet
+    init(puppetName)
+}
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x333333);
@@ -99,17 +103,9 @@ function animate() {
 }
 animate();
 
-
-// -------------------------------------------
-// Simulation code below this line
-// -------------------------------------------
-
-// Trigger the test sequence 2 seconds after the page loads
-window.addEventListener('load', () => {
-    setTimeout(runTestSequence, 2000);
-});
-
-// -------------------------------------------
-// End of Simulation code
-// -------------------------------------------
-
+if (IS_SIMULATION_ACTIVE) {
+    // Trigger the test sequence 2 seconds after the page loads
+    window.addEventListener('load', () => {
+        setTimeout(runTestSequence, 2000);
+    });
+}
