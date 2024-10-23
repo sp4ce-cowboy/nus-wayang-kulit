@@ -32,7 +32,7 @@ export function runProlongedTestSequence() {
     // Helper function to delay the simulation of key events
     function pressKey(key, delay) {
         setTimeout(() => simulateKeyEvent(key), delay);
-        setTimeout(() => simulateKeyEvent(key, 'keyup'), delay + 100); // Release after 100ms
+        setTimeout(() => simulateKeyEvent(key, 'keyup'), delay + 1000); // Release after 100ms
     }
 
     let delay = 0;
@@ -51,6 +51,17 @@ export function runProlongedTestSequence() {
     pressKey('a', delay += 500);  // Rotate left
     pressKey('d', delay += 500);  // Rotate right
 
+    pressKey('j', delay += 500);  // Rotate hand anticlockwise
+    pressKey('k', delay += 500);  // Rotate hand clockwise
+
+    // Part 5: Complex movement (body + arm + hand together)
+    pressKey('ArrowUp', delay += 500); 
+    pressKey('h', delay += 100);  // Move arm while body moves up
+    pressKey('j', delay += 100);  // Move hand simultaneously
+    pressKey('ArrowDown', delay += 500);
+    pressKey('l', delay += 100);
+    pressKey('k', delay += 100);
+
     // Part 3: Rotate arm pivot in both directions
     pressKey('h', delay += 500);  // Rotate arm anticlockwise
     pressKey('l', delay += 500);  // Rotate arm clockwise
@@ -66,6 +77,19 @@ export function runProlongedTestSequence() {
     pressKey('ArrowDown', delay += 500);
     pressKey('l', delay += 100);
     pressKey('k', delay += 100);
+
+    pressKey('ArrowUp', delay += 0);
+    pressKey('ArrowRight', delay += 500);
+    pressKey('ArrowDown', delay += 500);
+    pressKey('ArrowLeft', delay += 500);
+    pressKey('.', delay += 500);  // Move forward along Z-axis
+    pressKey(',', delay += 500);  // Move backward along Z-axis
+
+    // Part 2: Rotate body on all axes
+    pressKey('w', delay += 500);  // Rotate forward
+    pressKey('s', delay += 500);  // Rotate backward
+    pressKey('a', delay += 500);  // Rotate left
+    pressKey('d', delay += 500);  // Rotate right
 
     // Part 6: Reverse the animation back to the center
     pressKey('k', delay += 500);  // Reverse hand movement

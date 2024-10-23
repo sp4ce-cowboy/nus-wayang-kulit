@@ -2,7 +2,10 @@ import * as THREE from 'three';
 import './style.css';
 import { PuppetPart3D } from './models/PuppetPart3D.js';
 import { setupEventListeners } from './common/EventHandlers.js';
-import { runTestSequence } from '../tests/Simulation.js';
+import { 
+    runTestSequence,
+    runProlongedTestSequence
+} from '../tests/Simulation.js';
 import { 
     IS_SIMULATION_ACTIVE,
     IS_MANUAL_PUPPET_INPUT
@@ -104,8 +107,8 @@ function animate() {
 animate();
 
 if (IS_SIMULATION_ACTIVE) {
-    // Trigger the test sequence 2 seconds after the page loads
+    // Trigger the test sequence 1000 ms after the page loads
     window.addEventListener('load', () => {
-        setTimeout(runTestSequence, 2000);
+        setTimeout(runProlongedTestSequence, 1000);
     });
 }
