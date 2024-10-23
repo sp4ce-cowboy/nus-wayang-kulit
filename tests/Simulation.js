@@ -103,3 +103,35 @@ export function runProlongedTestSequence() {
     // Final: Reset everything to the center smoothly
     setTimeout(() => simulateKeyEvent('x'), delay += 1000); // Press 'x' to reset all positions
 }
+
+export function runArmTestSequence() {
+    console.log('Running arm test sequence...');
+
+    // Press 'h' for 500 ms
+    simulateKeyEvent('h');
+    setTimeout(() => {
+        simulateKeyEvent('h', 'keyup'); // Release 'h'
+    }, 300);
+
+    // Press 'h' and 'k' together for 1000 ms
+    setTimeout(() => {
+        simulateKeyEvent('h'); // Press 'h'
+        simulateKeyEvent('k'); // Press 'k'
+    }, 500); // Start right after the first press
+
+    setTimeout(() => {
+        simulateKeyEvent('h', 'keyup'); // Release 'h'
+        simulateKeyEvent('k', 'keyup'); // Release 'k'
+    }, 2500); // Release both after 1000 ms
+
+    // Press 'j' and 'l' together for 1000 ms
+    setTimeout(() => {
+        simulateKeyEvent('j'); // Press 'j'
+        simulateKeyEvent('l'); // Press 'l'
+    }, 2500); // Start immediately after the hk sequence
+
+    setTimeout(() => {
+        simulateKeyEvent('j', 'keyup'); // Release 'j'
+        simulateKeyEvent('l', 'keyup'); // Release 'l'
+    }, 4500); // Release both after 1000 ms
+}

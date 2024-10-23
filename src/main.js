@@ -4,12 +4,15 @@ import { PuppetPart3D } from './models/PuppetPart3D.js';
 import { setupEventListeners } from './common/EventHandlers.js';
 import { 
     runTestSequence,
-    runProlongedTestSequence
+    runProlongedTestSequence,
+    runArmTestSequence
 } from '../tests/Simulation.js';
 import { 
     IS_SIMULATION_ACTIVE,
     IS_MANUAL_PUPPET_INPUT
 } from './common/ControlPanel.js';
+
+const currentTest = runArmTestSequence
 
 // Function to load the JSON configuration
 async function loadPuppetConfig(puppetName) {
@@ -119,6 +122,6 @@ async function init(puppetName) {
     if (IS_SIMULATION_ACTIVE) {
         // Trigger the test sequence 1000 ms after the page loads
         window.addEventListener('load', () => {
-            setTimeout(runProlongedTestSequence, 1000);
+            setTimeout(currentTest, 1000);
         });
     }
