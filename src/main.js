@@ -82,49 +82,49 @@ async function init(puppetName) {
             console.error(error);
             alert(`Failed to load puppet: ${puppetName}`);
         }
-    }
+}
+
+if (IS_MANUAL_PUPPET_INPUT) {
+    const puppetName = prompt("Enter the puppet name (e.g., 'puppet_01'):");
     
-    if (IS_MANUAL_PUPPET_INPUT) {
-        const puppetName = prompt("Enter the puppet name (e.g., 'puppet_01'):");
-        
-        if (puppetName) {
-            init(puppetName);
-        } else {
-            alert('Puppet name is required!');
-        }
-        
+    if (puppetName) {
+        init(puppetName);
     } else {
-        const puppetName = 'puppet_01'; // Default puppet
-        init(puppetName)
+        alert('Puppet name is required!');
     }
     
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x333333);
-    
-    const ambientLight = new THREE.AmbientLight(0xffffff, 2.5); // Color and intensity
-    scene.add(ambientLight);
-    
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    directionalLight.position.set(10, 10, 10);
-    scene.add(directionalLight);
-    
-    const renderer = new THREE.WebGLRenderer({ canvas: document.querySelector('.webgl') });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.outputEncoding = THREE.sRGBEncoding;
-    
-    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(0, 0, 1);
-    scene.add(camera);
-    
-    function animate() {
-        requestAnimationFrame(animate);
-        renderer.render(scene, camera);
-    }
-    animate();
-    
-    if (IS_SIMULATION_ACTIVE) {
-        // Trigger the test sequence 1000 ms after the page loads
-        window.addEventListener('load', () => {
-            setTimeout(currentTest, 1000);
-        });
-    }
+} else {
+    const puppetName = 'puppet_01'; // Default puppet
+    init(puppetName)
+}
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x333333);
+
+const ambientLight = new THREE.AmbientLight(0xffffff, 2.5); // Color and intensity
+scene.add(ambientLight);
+
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+directionalLight.position.set(10, 10, 10);
+scene.add(directionalLight);
+
+const renderer = new THREE.WebGLRenderer({ canvas: document.querySelector('.webgl') });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.outputEncoding = THREE.sRGBEncoding;
+
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+camera.position.set(0, 0, 1);
+scene.add(camera);
+
+function animate() {
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+}
+animate();
+
+if (IS_SIMULATION_ACTIVE) {
+    // Trigger the test sequence 1000 ms after the page loads
+    window.addEventListener('load', () => {
+        setTimeout(currentTest, 1000);
+    });
+}
