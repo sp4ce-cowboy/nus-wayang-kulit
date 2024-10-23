@@ -17,7 +17,7 @@
 
 
 // Store initial positions and rotations
-const initialState = {
+/*const initialState = {
     body: {
         position: new THREE.Vector3(0, 0, 0),
         rotation: new THREE.Euler(1.7, 0, 0)
@@ -32,26 +32,22 @@ const initialState = {
         position: new THREE.Vector3(0, 0, 0.12),
         rotation: new THREE.Euler(0, 0, 0)
     }
-};
+};*/
 
 // Setup event listeners for key tracking and actions
-export function setupEventListeners({ body, armPivot, handPivot, renderer, camera }, limits) {
+export function setupEventListeners(
+    { body, armPivot, handPivot, renderer, camera }, limits, initialState
+) {
     // Track keydown events
     document.addEventListener('keydown', (event) => {
         // Prevent default scrolling for arrow keys and others if necessary
-        const keysToPrevent = [
-            'ArrowUp',
-            'ArrowDown',
-            'ArrowLeft',
-            'ArrowRight'
-        ];
-        
+        const keysToPrevent = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
         if (keysToPrevent.includes(event.key)) {
             event.preventDefault(); // Prevent default scroll behavior
         }
         
         if (event.key === 'x') {
-            resetAll(body, armPivot, handPivot); // Reset everything on 'q' press
+            resetAll(body, armPivot, handPivot, initialState); // Reset everything on 'q' press
         } else {
             keyState[event.key] = true; // Mark the key as pressed
         }
@@ -73,8 +69,8 @@ export function setupEventListeners({ body, armPivot, handPivot, renderer, camer
     animate(body, armPivot, handPivot, limits);
 }
 
-// Reset function to return everything to the initial state
-function resetAll(body, armPivot, handPivot) {
+// Reset function to return everything to a hardcoded state
+function resetCustom(body, armPivot, handPivot) {
     // Clear all key states to stop any ongoing actions
     for (const key in keyState) {
         keyState[key] = false;
@@ -99,6 +95,23 @@ function resetAll(body, armPivot, handPivot) {
     // Reset handPivot position and rotation
     handPivot.position.copy(initialState.handPivot.position);
     handPivot.rotation.copy(initialState.handPivot.rotation);
+}
+
+// Reset function to return everything to the initial state
+function resetAll(body, armPivot, handPivot, initialState) {
+    for (const key in keyState) keyState[key] = false; // Clear all key states
+
+    // Reset body position and rotation
+    body.setPosition(...initialState.body.position);
+    body.setRotation(...initialState.body.rotation);
+
+    // Reset armPivot position and rotation
+    armPivot.position.copy(new THREE.Vector3(...initialState.armPivot.position));
+    armPivot.rotation.copy(new THREE.Euler(...initialState.armPivot.rotation));
+
+    // Reset handPivot position and rotation
+    handPivot.position.copy(new THREE.Vector3(...initialState.handPivot.position));
+    handPivot.rotation.copy(new THREE.Euler(...initialState.handPivot.rotation));
 }
 
 // Animation loop to apply transformations continuously
