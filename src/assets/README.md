@@ -4,7 +4,7 @@
 
 The assets directory contains all the information required for each puppet to be rendered properly. The files must be placed in accordance with the requirements herein specified to ensure that all the models load properly, and no path issues arise.
 
-The 3d_models 
+The `archived_assets` folder contains useful assets that do not correspond to any specific puppet.
 
 ### Folder Structure Example
 
@@ -35,16 +35,16 @@ puppet_01
 
 Within the assets folder, all resources relevant to a particular puppet shall be constrainted to a folder called `puppet_XX` where XX is the id of the puppet, which is arbitrary and assigned sequentially for now.
 
-Within the `puppet_XX` folder, there are 2 sub-directories which are `images` and `models`. 
+Within the `puppet_XX` folder, there are 2 sub-directories which are `images` and `models`.
 
 Inside `images` are the `png` files for each component of the puppet. Currently, these are the arm, hand, body, and optionally, the stick. They shall be titled simply as shown above.
 
-Inside `models` are 3 more sub-directories, corresponding to the arm, body, and hand. Within those directories are all the files needed for their `.obj` rendering including all material files and image files associated with those materials. Make copies of image files wherever possible to the relevant folder, and ensure that within the `mtl` file, all image references are local and no absolute paths are used. 
+Inside `models` are 3 more sub-directories, corresponding to the arm, body, and hand. Within those directories are all the files needed for their `.obj` rendering including all material files and image files associated with those materials. Make copies of image files wherever possible to the relevant folder, and ensure that within the `mtl` file, all image references are local and no absolute paths are used.
 
 Inside each sub-folder within `models`, there minimally must be 2 files:
 
 1. `part.obj`
-2. `part.mtl` 
+2. `part.mtl`
 
 These two files must be named exactly the same as their folders.
 
