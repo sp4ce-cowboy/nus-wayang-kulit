@@ -9,7 +9,8 @@ import {
 } from '../tests/Simulation.js';
 import { 
     IS_SIMULATION_ACTIVE,
-    IS_MANUAL_PUPPET_INPUT
+    IS_MANUAL_PUPPET_INPUT,
+    SHOW_HELPERS
 } from './common/ControlPanel.js';
 
 const currentTest = runArmTestSequence
@@ -38,8 +39,10 @@ async function init(puppetName) {
         const armPivotHelper = new THREE.AxesHelper(0.1);
         const handPivotHelper = new THREE.AxesHelper(0.1);
         
-        armPivot.add(armPivotHelper);
-        handPivot.add(handPivotHelper); 
+        if (SHOW_HELPERS) {
+            armPivot.add(armPivotHelper);
+            handPivot.add(handPivotHelper); 
+        }
         
         body.onReady = () => {
             body.addToScene(scene);
