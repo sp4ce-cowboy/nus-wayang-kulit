@@ -15,25 +15,6 @@
     ROTATION_THRESHOLD,
 } from './Constants.js';
 
-
-// Store initial positions and rotations
-/*const initialState = {
-    body: {
-        position: new THREE.Vector3(0, 0, 0),
-        rotation: new THREE.Euler(1.7, 0, 0)
-    },
-    
-    armPivot: {
-        position: new THREE.Vector3(-0.08, 0.01, -0.07),
-        rotation: new THREE.Euler(0, 0, 0)
-    },
-    
-    handPivot: {
-        position: new THREE.Vector3(0, 0, 0.12),
-        rotation: new THREE.Euler(0, 0, 0)
-    }
-};*/
-
 // Setup event listeners for key tracking and actions
 export function setupEventListeners(
     { body, armPivot, handPivot, renderer, camera }, limits, initialState
