@@ -130,10 +130,10 @@ function animate(body, armPivot, handPivot, limits) {
     if (keyState['e']) {
         body.rotate(0, INVERSE_ROTATION_THRESHOLD, 0);
     }
-    if (keyState['w']) {
+    if (keyState['s']) {
         body.rotate(ROTATION_THRESHOLD, 0, 0);
     }
-    if (keyState['s']) {
+    if (keyState['w']) {
         body.rotate(INVERSE_ROTATION_THRESHOLD, 0, 0);
     }
     if (keyState['h']) {
