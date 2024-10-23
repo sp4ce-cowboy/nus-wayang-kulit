@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import './style.css';
 import { PuppetPart3D } from './models/PuppetPart3D.js';
 import { setupEventListeners } from './common/EventHandlers.js';
+import { runTestSequence } from '../tests/Simulation.js';
 
 
 // Function to load the JSON configuration
@@ -100,33 +101,15 @@ animate();
 
 
 // -------------------------------------------
-// Place the simulation code below this line
+// Simulation code below this line
 // -------------------------------------------
 
-// Helper function to simulate key events
-function simulateKeyEvent(key, eventType = 'keydown') {
-    const event = new KeyboardEvent(eventType, { key });
-    document.dispatchEvent(event);
-}
-
-// Example: Simulate a sequence of key presses (up, down, left, right)
-function runTestSequence() {
-    console.log('Running test sequence...');
-
-    // Simulate pressing 'ArrowUp', 'ArrowDown', 'h', and 'k'
-    simulateKeyEvent('ArrowUp');
-    setTimeout(() => simulateKeyEvent('ArrowDown'), 500);
-    setTimeout(() => simulateKeyEvent('h'), 1000);
-    setTimeout(() => simulateKeyEvent('k'), 1500);
-
-    // Simulate releasing the keys
-    setTimeout(() => simulateKeyEvent('ArrowUp', 'keyup'), 2000);
-    setTimeout(() => simulateKeyEvent('ArrowDown', 'keyup'), 2500);
-    setTimeout(() => simulateKeyEvent('h', 'keyup'), 3000);
-    setTimeout(() => simulateKeyEvent('k', 'keyup'), 3500);
-}
-
-// Trigger the test sequence 3 seconds after the page loads
+// Trigger the test sequence 2 seconds after the page loads
 window.addEventListener('load', () => {
     setTimeout(runTestSequence, 2000);
 });
+
+// -------------------------------------------
+// End of Simulation code
+// -------------------------------------------
+

@@ -19,7 +19,7 @@
         "material": "./assets/puppet_01/models/hand/hand.mtl",
         "scale": [0.08, 0.08, 0.07],
         "position": [-0.025, 0.01, 0.055],
-        "pivotPosition": [0, 0, 0.105],
+        "pivotPosition": [0, 0, 0.11],
         "rotation": [-1.7, -1.7, -0.2]
     },
     "limits": {
