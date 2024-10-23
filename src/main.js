@@ -1,61 +1,130 @@
 import * as THREE from 'three';
 import './style.css';
-import { PuppetPart3D } from './models/PuppetPart3D.js';  
+import { PuppetPart3D } from './models/PuppetPart3D.js';
 import { setupEventListeners } from './common/EventHandlers.js';
+import { 
+    runTestSequence,
+    runProlongedTestSequence,
+    runArmTestSequence
+} from '../tests/Simulation.js';
+import { 
+    IS_SIMULATION_ACTIVE,
+    IS_MANUAL_PUPPET_INPUT,
+    SHOW_HELPERS
+} from './common/ControlPanel.js';
 
-// Create a scene
+const currentTest = runArmTestSequence
+
+// Function to load the JSON configuration
+async function loadPuppetConfig(puppetName) {
+    const response = await fetch(`./assets/${puppetName}/${puppetName}.json`);
+    if (!response.ok) {
+        throw new Error(`Failed to load config for puppet: ${puppetName}`);
+    }
+    return await response.json();
+}
+
+async function init(puppetName) {
+    try {
+        const config = await loadPuppetConfig(puppetName);
+        
+        // Initialize the body, arm, and hand using data from the JSON file
+        const body = new PuppetPart3D(config.body.path, config.body.material, ...config.body.scale);
+        const arm = new PuppetPart3D(config.arm.path, config.arm.material, ...config.arm.scale);
+        const hand = new PuppetPart3D(config.hand.path, config.hand.material, ...config.hand.scale);
+        
+        const armPivot = new THREE.Group();
+        const handPivot = new THREE.Group();
+        
+        const armPivotHelper = new THREE.AxesHelper(0.1);
+        const handPivotHelper = new THREE.AxesHelper(0.1);
+        
+        if (SHOW_HELPERS) {
+            armPivot.add(armPivotHelper);
+            handPivot.add(handPivotHelper); 
+        }
+        
+        body.onReady = () => {
+            body.addToScene(scene);
+            body.setPosition(...config.body.position);
+            body.setRotation(...config.body.rotation);
+            
+            arm.onReady = () => {
+                armPivot.add(arm.mesh);
+                arm.mesh.position.set(...config.arm.position);
+                armPivot.position.set(...config.arm.pivotPosition);
+                arm.setRotation(...config.arm.rotation);
+                body.mesh.add(armPivot);
+                
+                hand.onReady = () => {
+                    handPivot.add(hand.mesh);
+                    hand.mesh.position.set(...config.hand.position);
+                    handPivot.position.set(...config.hand.pivotPosition);
+                    hand.setRotation(...config.hand.rotation);
+                    armPivot.add(handPivot);
+                };
+            };
+        };
+        
+        // Extract initial positions and rotations from the JSON config
+        const initialState = {
+            body: { position: config.body.position, rotation: config.body.rotation },
+            armPivot: { position: config.arm.pivotPosition, rotation: config.arm.pivotRotation },
+            handPivot: { position: config.hand.pivotPosition, rotation: config.hand.pivotRotation }
+        };
+        
+        setupEventListeners(
+            { body, armPivot, handPivot, renderer, camera },
+            config.limits,
+            initialState);
+            
+        } catch (error) {
+            console.error(error);
+            alert(`Failed to load puppet: ${puppetName}`);
+        }
+}
+
+if (IS_MANUAL_PUPPET_INPUT) {
+    const puppetName = prompt("Enter the puppet name (e.g., 'puppet_01'):");
+    
+    if (puppetName) {
+        init(puppetName);
+    } else {
+        alert('Puppet name is required!');
+    }
+    
+} else {
+    const puppetName = 'puppet_01'; // Default puppet
+    init(puppetName)
+}
+
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x333333); // Dark grey background
+scene.background = new THREE.Color(0x333333);
 
-// Add ambient light (general soft light)
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // Color and intensity
+const ambientLight = new THREE.AmbientLight(0xffffff, 2.5); // Color and intensity
 scene.add(ambientLight);
 
-// Add directional light (acts like sunlight)
 const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-directionalLight.position.set(10, 10, 10); // Position the light source
+directionalLight.position.set(10, 10, 10);
 scene.add(directionalLight);
 
-// Create the body part with OBJ and MTL files
-const body = new PuppetPart3D(
-    './assets/puppet_01/puppet.obj',
-    './assets/puppet_01/puppet.mtl'
-);
+const renderer = new THREE.WebGLRenderer({ canvas: document.querySelector('.webgl') });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.outputEncoding = THREE.sRGBEncoding;
 
-// When the model is ready, add it to the scene and set its position
-body.onReady = () => {
-    body.addToScene(scene);
-    body.setPosition(0, 0, 0); // Set initial position
-    body.setPosition(-3, 4, 0); // Adjusted position
-    body.setRotation(1.7, 0, 0); // Adjusted rotation (in radians)
-
-    const limits = {
-        x: { min: -10, max: 10 },
-        y: { min: -5, max: 5 },
-        z: { min: -50, max: 35 },
-    };
-
-    setupEventListeners({ body, renderer, camera }, limits);
-};
-
-// Set up the camera
-const sizes = {
-    width: window.innerWidth,
-    height: window.innerHeight,
-};
-const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 1000);
-camera.position.set(0, 0, 30);
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+camera.position.set(0, 0, 1);
 scene.add(camera);
 
-// Renderer
-const canvas = document.querySelector('.webgl');
-const renderer = new THREE.WebGLRenderer({ canvas: canvas });
-renderer.setSize(sizes.width, sizes.height);
-
-// Animation loop
 function animate() {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
 }
-
 animate();
+
+if (IS_SIMULATION_ACTIVE) {
+    // Trigger the test sequence 1000 ms after the page loads
+    window.addEventListener('load', () => {
+        setTimeout(currentTest, 1000);
+    });
+}
