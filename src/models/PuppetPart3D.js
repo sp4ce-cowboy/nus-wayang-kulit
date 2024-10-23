@@ -40,6 +40,14 @@ export class PuppetPart3D {
                             this.scaleFactorY, 
                             this.scaleFactorZ
                         );
+                                            // Ensure the materials are properly applied to all child meshes
+                    this.mesh.traverse((child) => {
+                        if (child.isMesh) {
+                            child.material = materials.materials[child.name] || child.material;
+                            child.material.needsUpdate = true; // Force update
+                        }
+                    });
+
                         callback(); // Call the callback after the model is loaded
                     },
                     undefined,

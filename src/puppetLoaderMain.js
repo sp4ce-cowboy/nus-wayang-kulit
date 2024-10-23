@@ -21,6 +21,12 @@ async function init(puppetName) {
     const armPivot = new THREE.Group(); // Pivot for arm
     const handPivot = new THREE.Group(); // Pivot for hand
 
+    const armPivotHelper = new THREE.AxesHelper(0.1);
+    armPivot.add(armPivotHelper); 
+
+    const handPivotHelper = new THREE.AxesHelper(0.1);
+    handPivot.add(handPivotHelper); 
+
     body.onReady = () => {
         body.addToScene(scene);
         body.setPosition(...config.body.position);
@@ -55,8 +61,18 @@ init("puppet_01");
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x333333);
 
+// Add ambient light (general soft light)
+const ambientLight = new THREE.AmbientLight(0xffffff, 3); // Color and intensity
+scene.add(ambientLight);
+
+// Add directional light (acts like sunlight)
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+directionalLight.position.set(10, 10, 10);
+scene.add(directionalLight);
+
 const renderer = new THREE.WebGLRenderer({ canvas: document.querySelector('.webgl') });
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.outputEncoding = THREE.sRGBEncoding;
 
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
 camera.position.set(0, 0, 1);
