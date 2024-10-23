@@ -136,16 +136,16 @@ function animate(body, armPivot, handPivot, limits) {
     if (keyState['s']) {
         body.rotate(INVERSE_ROTATION_THRESHOLD, 0, 0);
     }
-    if (keyState['h']) {
+    if (keyState['l']) {
         armPivot.rotation.y -= ROTATION_THRESHOLD;
     }
-    if (keyState['l']) {
+    if (keyState['h']) {
         armPivot.rotation.y += ROTATION_THRESHOLD;
     }
-    if (keyState['j']) {
+    if (keyState['k']) {
         handPivot.rotation.y -= ROTATION_THRESHOLD;
     }
-    if (keyState['k']) {
+    if (keyState['j']) {
         handPivot.rotation.y += ROTATION_THRESHOLD;
     }
 }
