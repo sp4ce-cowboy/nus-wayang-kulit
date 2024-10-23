@@ -2,6 +2,7 @@
     "body": {
         "path": "./assets/puppet_01/models/body/body.obj",
         "material": "./assets/puppet_01/models/body/body.mtl",
+        "scale": [1, 1, 1],
         "position": [0, 0, 0],
         "rotation": [1.7, 0, 0]
     },
