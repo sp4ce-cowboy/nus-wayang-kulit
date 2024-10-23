@@ -4,6 +4,8 @@
 
 The assets directory contains all the information required for each puppet to be rendered properly. The files must be placed in accordance with the requirements herein specified to ensure that all the models load properly, and no path issues arise.
 
+The 3d_models 
+
 ### Folder Structure Example
 
 puppet_01
