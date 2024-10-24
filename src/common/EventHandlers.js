@@ -13,12 +13,14 @@
     ROTATION_THRESHOLD,
 } from './Constants.js';
 
+import { applyInverseKinematics } from './InverseKinematics.js';
+
 // Track key states
 const keyState = {};
-var mousePosition = new THREE.Vector3();
-var armToEndDistance = 0;
-var armToHandDistance = 0;
-var handToEndDistance = 0;
+export var mousePosition = new THREE.Vector3();
+export var armToEndDistance = 0;
+export var armToHandDistance = 0;
+export var handToEndDistance = 0;
 
 // Setup event listeners for key tracking and actions
 export function setupEventListeners(
@@ -88,9 +90,14 @@ function animate(body, armPivot, handPivot, endEffector, limits) {
 
     armToEndDistance = getVectorDistance(armPivot, endEffector);
     armToHandDistance = getArmPivotToHandPivotDistance(armPivot, handPivot)
-    aandToEndDistance = getHandPivotToEndEffectorDistance(handPivot, endEffector)
+    handToEndDistance = getHandPivotToEndEffectorDistance(handPivot, endEffector)
 
     displayAllVectorDistances(armToEndDistance,armToHandDistance, handToEndDistance);
+    const tempPosition = new THREE.Vector3();
+    tempPosition.setY(0.0);
+    tempPosition.setX(0.0);
+    tempPosition.setZ(0.01);
+    //applyInverseKinematics(tempPosition, armPivot, handPivot);
     handleKeyMovements(body, armPivot, handPivot, limits);
 }
 
@@ -230,4 +237,3 @@ export function getHandPivotToEndEffectorDistance(handPivot, endEffector) {
     const distance = handPosition.distanceTo(endEffectorPosition);
     return distance;
 }
-
