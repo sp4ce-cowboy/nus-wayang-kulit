@@ -121,3 +121,28 @@ function animate(body, armPivot, handPivot, limits) {
         handPivot.rotation.y += ROTATION_THRESHOLD;
     }
 }
+
+export function displayMouseCoordinates(x, y) {
+    const coordinatesElement = document.getElementById('mouse-coordinates');
+    coordinatesElement.textContent = `x: ${x.toFixed(2)}, y: ${y.toFixed(2)}`;
+}
+
+// Get normalized mouse position (-1 to 1)
+export function getNormalizedMousePosition(event, renderer) {
+    const rect = renderer.domElement.getBoundingClientRect();
+    return {
+        x: ((event.clientX - rect.left) / rect.width) * 2 - 1,
+        y: -((event.clientY - rect.top) / rect.height) * 2 + 1
+    };
+}
+
+// Convert normalized coordinates to 3D world space
+export function convertTo3DCoordinates(x, y, camera) {
+    const vector = new THREE.Vector3(x, y, 0.5); // 0.5 = z position in NDC
+    vector.unproject(camera); // Convert from NDC to world coordinates
+    vector.sub(camera.position).normalize(); // Get direction from camera to the point
+
+    // Project the point onto a plane at z = 0
+    const distance = -camera.position.z / vector.z;
+    return camera.position.clone().add(vector.multiplyScalar(distance));
+}

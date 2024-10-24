@@ -1,12 +1,20 @@
 import * as THREE from 'three';
 import './style.css';
 import { PuppetPart3D } from './models/PuppetPart3D.js';
-import { setupEventListeners } from './common/EventHandlers.js';
+import { 
+    setupEventListeners,
+    getNormalizedMousePosition,
+    convertTo3DCoordinates,
+    displayMouseCoordinates
+
+} from './common/EventHandlers.js';
+
 import { 
     runTestSequence,
     runProlongedTestSequence,
     runArmTestSequence
 } from '../tests/Simulation.js';
+
 import { 
     IS_SIMULATION_ACTIVE,
     IS_MANUAL_PUPPET_INPUT,
@@ -100,23 +108,35 @@ if (IS_MANUAL_PUPPET_INPUT) {
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000000);
 
-const ambientLight = new THREE.AmbientLight(0xffffff, 2.5); // Color and intensity
+const ambientLight = new THREE.AmbientLight(0xffffff, 2.5);
 scene.add(ambientLight);
 
 const directionalLight = new THREE.DirectionalLight(0xfdf4dc, 1);
 directionalLight.position.set(10, 10, 10);
 scene.add(directionalLight);
 
-const renderer = new THREE.WebGLRenderer({ canvas: document.querySelector('.webgl') });
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.outputEncoding = THREE.sRGBEncoding;
-
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
 camera.position.set(0, 0, 1);
 scene.add(camera);
 
+const mousePosition = new THREE.Vector3();
+const raycaster = new THREE.Raycaster(); // For future use, if needed
+
+const renderer = new THREE.WebGLRenderer({ canvas: document.querySelector('.webgl') });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.outputEncoding = THREE.sRGBEncoding;
+
+renderer.domElement.addEventListener('mousemove', (event) => {
+    const { x, y } = getNormalizedMousePosition(event, renderer);
+    const coords = convertTo3DCoordinates(x, y, camera);
+
+    mousePosition.copy(coords); // Store the 3D coordinates
+    displayMouseCoordinates(coords.x, coords.y);
+});
+
 function animate() {
     requestAnimationFrame(animate);
+    console.log(`Mouse Position: (${mousePosition.x}, ${mousePosition.y})`);
     renderer.render(scene, camera);
 }
 animate();
