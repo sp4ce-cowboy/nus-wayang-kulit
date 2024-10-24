@@ -6,7 +6,7 @@ import {
     getNormalizedMousePosition,
     convertTo3DCoordinates,
     displayMouseCoordinates
-
+    
 } from './common/EventHandlers.js';
 
 import { 
@@ -43,13 +43,16 @@ async function init(puppetName) {
         
         const armPivot = new THREE.Group();
         const handPivot = new THREE.Group();
+        const endEffector = new THREE.Group();
         
         const armPivotHelper = new THREE.AxesHelper(0.1);
         const handPivotHelper = new THREE.AxesHelper(0.1);
+        const endEffectorHelper = new THREE.AxesHelper(0.1);
         
         if (SHOW_HELPERS) {
             armPivot.add(armPivotHelper);
             handPivot.add(handPivotHelper); 
+            endEffector.add(endEffectorHelper);
         }
         
         body.onReady = () => {
@@ -70,6 +73,9 @@ async function init(puppetName) {
                     handPivot.position.set(...config.hand.pivotPosition);
                     hand.setRotation(...config.hand.rotation);
                     armPivot.add(handPivot);
+                    
+                    endEffector.position.set(...config.hand.endEffectorPosition);
+                    handPivot.add(endEffector);  // Attach the endEffector to the hand
                 };
             };
         };
@@ -83,11 +89,11 @@ async function init(puppetName) {
         
         setupEventListeners({ body, armPivot, handPivot, renderer, camera }, config.limits, initialState);
         
-            
-        } catch (error) {
-            console.error(error);
-            alert(`Failed to load puppet: ${puppetName}`);
-        }
+        
+    } catch (error) {
+        console.error(error);
+        alert(`Failed to load puppet: ${puppetName}`);
+    }
 }
 
 if (IS_MANUAL_PUPPET_INPUT) {
@@ -128,9 +134,10 @@ renderer.outputEncoding = THREE.sRGBEncoding;
 renderer.domElement.addEventListener('mousemove', (event) => {
     const { x, y } = getNormalizedMousePosition(event, renderer);
     const coords = convertTo3DCoordinates(x, y, camera);
-
+    
     mousePosition.copy(coords); // Store the 3D coordinates
-    displayMouseCoordinates(coords.x, coords.y);
+    mousePosition.setY(-mousePosition.y)
+    displayMouseCoordinates(mousePosition.x, mousePosition.y);
 });
 
 function animate() {
