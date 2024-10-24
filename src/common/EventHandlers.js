@@ -124,7 +124,7 @@ function animate(body, armPivot, handPivot, limits) {
 
 export function displayMouseCoordinates(x, y) {
     const coordinatesElement = document.getElementById('mouse-coordinates');
-    coordinatesElement.textContent = `x: ${x.toFixed(2)}, y: ${y.toFixed(2)}`;
+    coordinatesElement.textContent = `x: ${x.toFixed(3)}, y: ${y.toFixed(3)}`;
 }
 
 // Get normalized mouse position (-1 to 1)

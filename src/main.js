@@ -82,7 +82,6 @@ async function init(puppetName) {
         };
         
         setupEventListeners({ body, armPivot, handPivot, renderer, camera }, config.limits, initialState);
-        //setupEventListeners({ armPivot, handPivot, renderer, camera }, config.limits, config);
         
             
         } catch (error) {
