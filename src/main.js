@@ -13,7 +13,7 @@ import {
     SHOW_HELPERS
 } from './common/ControlPanel.js';
 
-const currentTest = runArmTestSequence
+const currentTest = runTestSequence
 
 // Function to load the JSON configuration
 async function loadPuppetConfig(puppetName) {
@@ -73,10 +73,9 @@ async function init(puppetName) {
             handPivot: { position: config.hand.pivotPosition, rotation: config.hand.pivotRotation }
         };
         
-        setupEventListeners(
-            { body, armPivot, handPivot, renderer, camera },
-            config.limits,
-            initialState);
+        setupEventListeners({ body, armPivot, handPivot, renderer, camera }, config.limits, initialState);
+        //setupEventListeners({ armPivot, handPivot, renderer, camera }, config.limits, config);
+        
             
         } catch (error) {
             console.error(error);
@@ -99,12 +98,12 @@ if (IS_MANUAL_PUPPET_INPUT) {
 }
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x333333);
+scene.background = new THREE.Color(0x000000);
 
 const ambientLight = new THREE.AmbientLight(0xffffff, 2.5); // Color and intensity
 scene.add(ambientLight);
 
-const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+const directionalLight = new THREE.DirectionalLight(0xfdf4dc, 1);
 directionalLight.position.set(10, 10, 10);
 scene.add(directionalLight);
 

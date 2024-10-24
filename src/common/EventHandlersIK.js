@@ -1,93 +1,111 @@
-const keyState = {};
 import * as THREE from 'three';
-import {
-    INVERSE_MOTION_THRESHOLD, 
-    INVERSE_ROTATION_THRESHOLD, 
-    MOTION_THRESHOLD, 
-    ROTATION_THRESHOLD 
-} from './Constants.js';
 
+/**
+ * This file contains all the EventHandlers which include the event listeners for 
+ * mouse-based 2D inverse kinematics and other events.
+ */
 
-export function setupEventListeners({ body, armPivot, handPivot, renderer, camera }, limits) {
-    document.addEventListener('keydown', (event) => {
-        const keysToPrevent = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
-        if (keysToPrevent.includes(event.key)) {
-            event.preventDefault(); // Prevent default scroll behavior
-        }
+export function setupEventListeners({ armPivot, handPivot, renderer, camera }, limits, config) {
+    // Get the configuration values for the arm and hand pivots
+    const root = new THREE.Vector3(...config.arm.pivotPosition);  // Root is arm's pivot position
+    const segmentLength = 0.1;  // Example logic for arm segment length
 
-        if (event.key === 'q') {
-            resetAll(body, armPivot, handPivot); // Reset everything on 'q' press
-        } else {
-            keyState[event.key] = true;
-        }
+    // Update world matrices to ensure correct transformations
+    armPivot.updateMatrixWorld();
+    handPivot.updateMatrixWorld();
+
+    // Mouse move listener to control IK
+    document.addEventListener('mousemove', (event) => {
+        const mousePosition = getMousePositionInScene(event, renderer, camera);
+
+        // Call the drawArm function to apply inverse kinematics logic
+        drawArm(mousePosition.x, mousePosition.y, -1, root, segmentLength, armPivot, handPivot);
     });
 
-    document.addEventListener('keyup', (event) => {
-        keyState[event.key] = false;
-    });
-
+    // Window resize event listener
     window.addEventListener('resize', () => {
         renderer.setSize(window.innerWidth, window.innerHeight);
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
     });
-
-    animate(body, armPivot, handPivot, limits);
 }
 
-// Function to move the hand with 'h', 'j', 'k', 'l'
-function moveHand(handPivot) {
-    const step = 0.02; // Step size for movement
+// Function to convert mouse position to Three.js world coordinates
+function getMousePositionInScene(event, renderer, camera) {
+    const rect = renderer.domElement.getBoundingClientRect();
+    const mouse = new THREE.Vector2(
+        ((event.clientX - rect.left) / rect.width) * 2 - 1,
+        -((event.clientY - rect.top) / rect.height) * 2 + 1
+    );
 
-    if (keyState['h']) {
-        handPivot.position.z -= step; // Move left
-    }
-    if (keyState['l']) {
-        handPivot.position.z += step; // Move right
-    }
-    if (keyState['j']) {
-        handPivot.position.x -= step; // Move down
-    }
-    if (keyState['k']) {
-        handPivot.position.x += step; // Move up
-    }
+    const vector = new THREE.Vector3(mouse.x, mouse.y, 0.5).unproject(camera);
+    return vector;
 }
 
-// Function to apply inverse kinematics to the arm
-function applyIK(armPivot, handPivot) {
-    const armPos = armPivot.position;
-    const handPos = handPivot.position;
+function drawArm(endEffectorX, endEffectorY, preferredRotation, root, segmentLength, armPivot, handPivot) {
+    // Calculate direction from the root (arm pivot) to the mouse
+    let dirx = endEffectorX - root.x;
+    let diry = endEffectorY - root.y;
+    const len = Math.sqrt(dirx * dirx + diry * diry);
 
-    // Calculate the angle between the arm and the hand using atan2
-    const deltaX = handPos.z - armPos.z;
-    const deltaY = handPos.x - armPos.x;
-    const angle = Math.atan2(deltaY, deltaX);
+    // Normalize the direction
+    dirx /= len;
+    diry /= len;
 
-    // Set the arm's rotation to align with the hand's position
-    armPivot.rotation.z = angle;
+    // Calculate the pole vector for the arm
+    let poleVectorX = root.x + (dirx * len) / 2;
+    let poleVectorY = root.y + (diry * len) / 2;
+
+    // Calculate any rotation correction needed
+    let disc = Math.sqrt(segmentLength * segmentLength - (len * len) / 4);
+    if (preferredRotation < 0) disc = -disc;
+
+    poleVectorX -= diry * disc;
+    poleVectorY += dirx * disc;
+
+    // Correct the hand position using local coordinates
+    armPivot.position.set(poleVectorY, 0, poleVectorX);
+    armPivot.updateMatrixWorld(); // Ensure the changes apply globally
+
+    // Move the hand to the end effector position
+    handPivot.position.set(endEffectorY, 0, endEffectorX);
+    handPivot.updateMatrixWorld();
 }
 
-// Animation loop to apply transformations continuously
-function animate(body, armPivot, handPivot, limits) {
-    requestAnimationFrame(() => animate(body, armPivot, handPivot, limits));
+// Function to simulate inverse kinematics with 2D movement
+function drawArm1(endEffectorX, endEffectorY, preferredRotation, root, segmentLength, armPivot, handPivot) {
+    // Calculate direction from root to the mouse (end effector)
+    let dirx = endEffectorX - root.x;
+    let diry = endEffectorY - root.y;
+    const len = Math.sqrt(dirx * dirx + diry * diry);
+    dirx /= len;
+    diry /= len;
 
-    // Apply body movements
-    if (keyState['ArrowLeft']) {
-        body.move(Math.max(limits.x.min, body.mesh.position.x - MOTION_THRESHOLD) - body.mesh.position.x, 0, 0);
-    }
-    if (keyState['ArrowRight']) {
-        body.move(Math.min(limits.x.max, body.mesh.position.x + MOTION_THRESHOLD) - body.mesh.position.x, 0, 0);
-    }
-    if (keyState['ArrowUp']) {
-        body.move(0, Math.min(limits.y.max, body.mesh.position.y + MOTION_THRESHOLD) - body.mesh.position.y, 0);
-    }
-    if (keyState['ArrowDown']) {
-        body.move(0, Math.max(limits.y.min, body.mesh.position.y - MOTION_THRESHOLD) - body.mesh.position.y, 0);
+    let poleVectorX, poleVectorY;
+    let disc = segmentLength * segmentLength - (len * len) / 4;
+
+    if (disc < 0) {
+        // Fully extend the arm if the mouse is out of range
+        poleVectorX = root.x + dirx * segmentLength;
+        poleVectorY = root.y + diry * segmentLength;
+        endEffectorX = root.x + dirx * segmentLength * 2;
+        endEffectorY = root.y + diry * segmentLength * 2;
+    } else {
+        // Calculate pole vector for joint bending
+        poleVectorX = root.x + (dirx * len) / 2;
+        poleVectorY = root.y + (diry * len) / 2;
+        disc = Math.sqrt(disc);
+        if (preferredRotation < 0) disc = -disc;
+
+        poleVectorX -= diry * disc;
+        poleVectorY += dirx * disc;
     }
 
-    // Move the hand based on 'h', 'j', 'k', 'l' inputs
-    moveHand(handPivot);
+    // Update the arm pivot to follow the calculated pole vector
+    armPivot.position.set(poleVectorX, poleVectorY, 0);
+    armPivot.updateMatrixWorld();
 
-    // Apply inverse kinematics to align the arm with the hand
-    applyIK(armPivot, handPivot);
+    // Move the hand pivot to the end effector position
+    handPivot.position.set(endEffectorX, endEffectorY, 0);
+    handPivot.updateMatrixWorld();
 }

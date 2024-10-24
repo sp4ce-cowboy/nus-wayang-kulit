@@ -50,34 +50,6 @@ export function setupEventListeners(
     animate(body, armPivot, handPivot, limits);
 }
 
-// Reset function to return everything to a hardcoded state
-function resetCustom(body, armPivot, handPivot) {
-    // Clear all key states to stop any ongoing actions
-    for (const key in keyState) {
-        keyState[key] = false;
-    }
-    
-    // Reset body position and rotation
-    body.setPosition(
-        initialState.body.position.x,
-        initialState.body.position.y,
-        initialState.body.position.z
-    );
-    body.setRotation(
-        initialState.body.rotation.x,
-        initialState.body.rotation.y,
-        initialState.body.rotation.z
-    );
-    
-    // Reset armPivot position and rotation
-    armPivot.position.copy(initialState.armPivot.position);
-    armPivot.rotation.copy(initialState.armPivot.rotation);
-    
-    // Reset handPivot position and rotation
-    handPivot.position.copy(initialState.handPivot.position);
-    handPivot.rotation.copy(initialState.handPivot.rotation);
-}
-
 // Reset function to return everything to the initial state
 function resetAll(body, armPivot, handPivot, initialState) {
     for (const key in keyState) keyState[key] = false; // Clear all key states
