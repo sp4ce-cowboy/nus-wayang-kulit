@@ -1,13 +1,7 @@
 import * as THREE from 'three';
 import './style.css';
 import { PuppetPart3D } from './models/PuppetPart3D.js';
-import { 
-    setupEventListeners,
-    getNormalizedMousePosition,
-    convertTo3DCoordinates,
-    displayMouseCoordinates
-    
-} from './common/EventHandlers.js';
+import { setupEventListeners } from './common/EventHandlers.js';
 
 import { 
     runTestSequence,
@@ -87,7 +81,7 @@ async function init(puppetName) {
             handPivot: { position: config.hand.pivotPosition, rotation: config.hand.pivotRotation }
         };
         
-        setupEventListeners({ body, armPivot, handPivot, renderer, camera }, config.limits, initialState);
+        setupEventListeners({ body, armPivot, handPivot, endEffector, renderer, camera }, config.limits, initialState);
         
         
     } catch (error) {
@@ -124,25 +118,14 @@ const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerH
 camera.position.set(0, 0, 1);
 scene.add(camera);
 
-const mousePosition = new THREE.Vector3();
 const raycaster = new THREE.Raycaster(); // For future use, if needed
 
 const renderer = new THREE.WebGLRenderer({ canvas: document.querySelector('.webgl') });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.outputEncoding = THREE.sRGBEncoding;
 
-renderer.domElement.addEventListener('mousemove', (event) => {
-    const { x, y } = getNormalizedMousePosition(event, renderer);
-    const coords = convertTo3DCoordinates(x, y, camera);
-    
-    mousePosition.copy(coords); // Store the 3D coordinates
-    mousePosition.setY(-mousePosition.y)
-    displayMouseCoordinates(mousePosition.x, mousePosition.y);
-});
-
 function animate() {
     requestAnimationFrame(animate);
-    console.log(`Mouse Position: (${mousePosition.x}, ${mousePosition.y})`);
     renderer.render(scene, camera);
 }
 animate();
