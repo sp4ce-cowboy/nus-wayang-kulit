@@ -7,23 +7,63 @@ import {
     handToEndDistance
 } from './EventHandlers.js';
 
-/**
- * Function to apply Inverse Kinematics (IK) to arm and hand pivots
- * @param {THREE.Vector3} targetPosition - Global coordinates of the target end effector position.
- * @param {THREE.Group} armPivot - The arm pivot group.
- * @param {THREE.Group} handPivot - The hand pivot group.
- */
-export function applyInverseKinematics(targetPosition, armPivot, handPivot) {
+export function applyInverseKinematics(targetDistance, armPivot, handPivot) {
+    const armAngle = calculateAngleWithCosineRule(armToHandDistance, targetDistance, handToEndDistance);
+    const handAngle = calculateAngleWithCosineRule(handToEndDistance, armToHandDistance, targetDistance);
+
+    displayAngle(armAngle, handAngle);
+
+    armPivot.rotation.y = -armAngle;
+    handPivot.rotation.y = handAngle;
+}
+
+export function calculateAngleWithCosineRule(leftA, rightB, oppositeC) {
+    // Ensure distances are valid
+    const numerator = Math.pow(leftA, 2) + Math.pow(rightB, 2) - Math.pow(oppositeC, 2);
+    const denominator = 2 * leftA * rightB;
+
+    // Handle potential precision issues
+    let cosAngleFraction = numerator / denominator;
+
+    // Clamp the value to avoid NaN errors due to floating-point precision
+    cosAngleFraction = Math.min(1, Math.max(-1, cosAngleFraction));
+
+    const angle = Math.acos(cosAngleFraction); // Angle in radians
+    console.log('Numerator:', numerator, 'Denominator:', denominator, 'Cosine:', cosAngleFraction, 'Angle (radians):', angle);
+
+    return angle;
+}
+
+
+export function displayAngle(armAngle, handAngle) {
+    const distanceElement = document.getElementById('angle-values');
+    distanceElement.textContent = `Arm: ${armAngle.toFixed(3)}, Hand: ${handAngle.toFixed(3)}`;
+}
+
+
+
+/*
+export function calculateAngleWithCosineRuleOld(leftA, rightB, oppositeC) {
+    const numerator = Math.pow(leftA, 2) + Math.pow(rightB, 2) - Math.pow(oppositeC, 2);
+    const denominator = 2 * leftA * rightB;
+    const cosAngleFraction = numerator / denominator;
+    const cosAngle = Math.acos(cosAngleFraction);
+    console.log(numerator, denominator, cosAngleFraction, cosAngle);
+    return cosAngle;
+}
+
+export function applyInverseKinematicsOld(targetPosition, armPivot, handPivot) {
     
     const handPosition = new THREE.Vector3();
     handPivot.getWorldPosition(handPosition);
+
     var handToTargetDistance = handPosition.distanceTo(targetPosition);
 
     // Use the sine rule to calculate the angles at the pivots
     const angleArmPivot = calculateAngle(
         armToHandDistance,
         armToEndDistance,
-        handToTargeDistance
+        handToTargetDistance
     );
 
     const angleHandPivot = calculateAngle(
@@ -33,8 +73,13 @@ export function applyInverseKinematics(targetPosition, armPivot, handPivot) {
     );
 
     // Apply the calculated angles as rotations to the pivots
+    if (angleArmPivot >= 1.5 || angleArmPivot < -1.5) {
     armPivot.rotation.y += angleArmPivot; // Apply arm pivot rotation
-    handPivot.rotation.y += angleHandPivot; // Apply hand pivot rotation
+    }
+
+    if (angleHandPivot >= 1.5 || angleHandPivot < -1.5) {
+        handPivot.rotation.y += angleHandPivot; // Apply hand pivot rotation
+    }
 }
 
 /**
@@ -44,6 +89,7 @@ export function applyInverseKinematics(targetPosition, armPivot, handPivot) {
  * @param {number} adjacentSide2 - Length of the second adjacent side.
  * @returns {number} - The calculated angle in radians.
  */
+/*
 function calculateAngle(oppositeSide, adjacentSide1, adjacentSide2) {
     // Use the cosine rule to ensure valid angles are computed
     const cosAngle = (
@@ -69,6 +115,7 @@ function calculateAngle(oppositeSide, adjacentSide1, adjacentSide2) {
  * @param {number} maxLength - The total length of the arm (armToHand + handToEnd).
  * @returns {THREE.Vector3} - The clamped end effector position.
  */
+/*
 function getMaxPossibleEndPosition(mousePosition, armPivotPosition, maxLength) {
     // Calculate the vector from the arm pivot to the mouse position
     const direction = new THREE.Vector3().subVectors(mousePosition, armPivotPosition);
@@ -88,4 +135,4 @@ function getMaxPossibleEndPosition(mousePosition, armPivotPosition, maxLength) {
     const clampedEndPosition = new THREE.Vector3().addVectors(armPivotPosition, direction);
 
     return clampedEndPosition;
-}
+}*/

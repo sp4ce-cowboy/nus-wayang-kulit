@@ -61,7 +61,8 @@ export function setupEventListeners(
         mousePosition.setY(-mousePosition.y)
         displayMouseCoordinates(mousePosition.x, mousePosition.y);
 
-        console.log(`Mouse Position from EH: (${mousePosition.x}, ${mousePosition.y})`);
+        //console.log(`Mouse Position from EH: (${mousePosition.x}, ${mousePosition.y})`);
+        //endEffector.position.copy(coords);
     });
     
     // Start the animation loop
@@ -84,6 +85,7 @@ function resetAll(body, armPivot, handPivot, initialState) {
     handPivot.position.copy(new THREE.Vector3(...initialState.handPivot.position));
     handPivot.rotation.copy(new THREE.Euler(...initialState.handPivot.rotation));
 }
+
 // Animation loop to apply movements and updates continuously
 function animate(body, armPivot, handPivot, endEffector, limits) {
     requestAnimationFrame(() => animate(body, armPivot, handPivot, endEffector, limits));
@@ -91,13 +93,29 @@ function animate(body, armPivot, handPivot, endEffector, limits) {
     armToEndDistance = getVectorDistance(armPivot, endEffector);
     armToHandDistance = getArmPivotToHandPivotDistance(armPivot, handPivot)
     handToEndDistance = getHandPivotToEndEffectorDistance(handPivot, endEffector)
-
-    displayAllVectorDistances(armToEndDistance,armToHandDistance, handToEndDistance);
+    
     const tempPosition = new THREE.Vector3();
-    tempPosition.setY(0.0);
-    tempPosition.setX(0.0);
+    tempPosition.setY(0.1);
+    tempPosition.setX(0.15);
     tempPosition.setZ(0.01);
-    //applyInverseKinematics(tempPosition, armPivot, handPivot);
+
+    var tempMousePosition = mousePosition.clone();
+    tempMousePosition.setZ(0.02);
+    tempMousePosition.setY(-mousePosition.y);
+
+    var maxMousePosition = getMaxPossibleMousePosition(tempMousePosition, armPivot);
+
+    displayAllVectorDistances(armToEndDistance, armToHandDistance, handToEndDistance);
+    displayProjectedMouseCoordinates(maxMousePosition);
+
+    var currentTargetDistance = getTargetToShoulderDistance(armPivot, maxMousePosition);
+    displayTargetDistance(currentTargetDistance);
+
+    const endEffectorPosition = new THREE.Vector3();
+    endEffector.getWorldPosition(endEffectorPosition);
+    displayMouseAndEndPositions(maxMousePosition, endEffectorPosition);
+    
+    applyInverseKinematics(currentTargetDistance, armPivot, handPivot);
     handleKeyMovements(body, armPivot, handPivot, limits);
 }
 
@@ -155,7 +173,25 @@ function handleKeyMovements(body, armPivot, handPivot, limits) {
 
 export function displayMouseCoordinates(x, y) {
     const coordinatesElement = document.getElementById('mouse-coordinates');
-    coordinatesElement.textContent = `x: ${x.toFixed(3)}, y: ${y.toFixed(3)}`;
+    coordinatesElement.textContent = `RMP x: ${x.toFixed(3)}, y: ${y.toFixed(3)}`;
+}
+
+export function displayProjectedMouseCoordinates(mousePos) {
+    const coordinatesElement = document.getElementById('projectedMousePosition');
+    coordinatesElement.textContent = `PMP x: ${mousePos.x.toFixed(3)}, y: ${mousePos.y.toFixed(3)}`;
+}
+
+export function displayTargetDistance(distance) {
+    const distanceElement = document.getElementById('target-distance');
+    distanceElement.textContent = `T_Distance: ${distance.toFixed(4)}`;
+}
+
+export function displayMouseAndEndPositions(mousePos, endPosition) {
+    const distanceElement = document.getElementById('current-mouse-position');
+    distanceElement.textContent = `Mouse Pos: x: ${mousePos.x.toFixed(3)}, y: ${mousePos.y.toFixed(3)}`;
+
+    const distanceElement2 = document.getElementById('current-endEffector-position');
+    distanceElement2.textContent = `End Eff Pos: x: ${endPosition.x.toFixed(3)}, y: ${endPosition.y.toFixed(3)}`;
 }
 
 // Get normalized mouse position (-1 to 1)
@@ -205,7 +241,7 @@ export function displayVectorDistance(distance) {
 export function displayAllVectorDistances(distance1, distance2, distance3) {
     // Update the distance display on the screen
     const display = document.getElementById('distanceDisplay');
-    display.innerHTML = `Distance: ${distance1.toFixed(3)},
+    display.innerHTML = `Distance: ${distance1.toFixed(4)},
     ArmToHand: ${distance2.toFixed(3)},
     HandToEnd: ${distance3.toFixed(3)}`;
 }
@@ -236,4 +272,46 @@ export function getHandPivotToEndEffectorDistance(handPivot, endEffector) {
     
     const distance = handPosition.distanceTo(endEffectorPosition);
     return distance;
+}
+
+export function getTargetToShoulderDistance(armPivot, targetPosition) {
+    armPivot.updateMatrixWorld();
+    
+    const armPosition = new THREE.Vector3();
+    armPivot.getWorldPosition(armPosition);
+    
+    const distance = armPosition.distanceTo(targetPosition);
+    return distance;
+}
+
+export function getMaxPossibleMousePosition(mousePosition, armPivot) {
+    const armLength = armToHandDistance;
+    const handLength = handToEndDistance;
+
+    // Get the origin as the world position of the armPivot
+    const origin = new THREE.Vector3();
+    armPivot.getWorldPosition(origin);
+
+    // Maximum allowed radius of the circle
+    const maxRadius = armLength + handLength;
+
+    // Calculate the vector from the armPivot (origin) to the mouse position
+    const deltaX = mousePosition.x - origin.x;
+    const deltaY = mousePosition.y - origin.y;
+
+    // Calculate the distance from the armPivot to the mouse position
+    const mouseDistance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+    // If the mouse is within the allowed radius, return the original mouse position
+    if (mouseDistance <= maxRadius) {
+        return mousePosition;
+    }
+
+    // Otherwise, clamp the position to the circle's edge
+    const scaleFactor = maxRadius / mouseDistance;
+    const clampedX = origin.x + deltaX * scaleFactor;
+    const clampedY = origin.y + deltaY * scaleFactor;
+
+    // Return the new position on the circle's boundary
+    return new THREE.Vector3(clampedX, clampedY, mousePosition.z);
 }
