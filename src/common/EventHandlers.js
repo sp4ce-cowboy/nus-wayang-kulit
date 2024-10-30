@@ -329,8 +329,8 @@ export function getMaxPossibleMousePosition(mousePosition, armPivot) {
 
     // Otherwise, clamp the position to the circle's edge
     const scaleFactor = maxRadius / mouseDistance;
-    const clampedX = origin.x + deltaX //* scaleFactor;
-    const clampedY = origin.y + deltaY //* scaleFactor;
+    const clampedX = origin.x + deltaX * scaleFactor;
+    const clampedY = origin.y + deltaY * scaleFactor;
 
     // Return the new position on the circle's boundary
     return new THREE.Vector3(clampedX, clampedY, mousePosition.z);
