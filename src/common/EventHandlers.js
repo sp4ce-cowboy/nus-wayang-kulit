@@ -122,12 +122,12 @@ function animate(body, armPivot, handPivot, endEffector, limits) {
         //console.log("Mouse position input is ", maxMousePosition);
         //console.log("End effector position is ", endEffectorPosition);
 
-        const difference = new THREE.Vector3().subVectors(mousePosition, endEffectorPosition);
-        console.log('Difference:', difference.length()); // Check how large the offset is
-        //currentLogs++;
+    const difference = new THREE.Vector3().subVectors(mousePosition, endEffectorPosition);
+    //('Difference:', difference.length()); // Check how large the offset is
+    //currentLogs++;
     //}   
     
-    applyInverseKinematics(currentTargetDistance, armPivot, handPivot);
+    applyInverseKinematics(maxMousePosition, currentTargetDistance, armPivot, handPivot);
     handleKeyMovements(body, armPivot, handPivot, limits);
 }
 

@@ -7,14 +7,18 @@ import {
     handToEndDistance
 } from './EventHandlers.js';
 
-export function applyInverseKinematics(targetDistance, armPivot, handPivot) {
+export function applyInverseKinematics(customMousePosition, targetDistance, armPivot, handPivot) {
     const armAngle = calculateAngleWithCosineRule(armToHandDistance, targetDistance, handToEndDistance);
     const handAngle = calculateAngleWithCosineRule(handToEndDistance, armToHandDistance, targetDistance);
 
     displayAngle(armAngle, handAngle);
 
-    armPivot.rotation.y = -armAngle;
-    handPivot.rotation.y = handAngle;
+    const offsetArmAngle = getOffsetAngleForArmPivot(customMousePosition, armPivot);
+    const totalArmAngle = armAngle + offsetArmAngle + Math.PI / 2;
+    const totalHandAngle = handAngle;
+
+    armPivot.rotation.y = totalArmAngle;
+    //handPivot.rotation.y = -totalHandAngle;
 }
 
 export function calculateAngleWithCosineRule(leftA, rightB, oppositeC) {
@@ -37,6 +41,17 @@ export function calculateAngleWithCosineRule(leftA, rightB, oppositeC) {
     }  
 
     return angle;
+}
+
+export function getOffsetAngleForArmPivot(targetPosition, armPivot) {
+    const armPivotPosition = new THREE.Vector3();
+    armPivot.getWorldPosition(armPivotPosition);
+
+    // Calculate the vector from the arm pivot to the target position
+    targetPosition = new THREE.Vector3().subVectors(targetPosition, armPivotPosition);
+
+    const angle = Math.atan2(targetPosition.y, targetPosition.x);
+    return angle
 }
 
 
