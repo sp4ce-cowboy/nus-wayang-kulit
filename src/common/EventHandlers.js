@@ -91,6 +91,8 @@ function resetAll(body, armPivot, handPivot, initialState) {
 function animate(body, armPivot, handPivot, endEffector, limits) {
     requestAnimationFrame(() => animate(body, armPivot, handPivot, endEffector, limits));
 
+    displayPivotPositions(armPivot, handPivot);
+
     armToEndDistance = getVectorDistance(armPivot, endEffector);
     armToHandDistance = getArmPivotToHandPivotDistance(armPivot, handPivot)
     handToEndDistance = getHandPivotToEndEffectorDistance(handPivot, endEffector)
@@ -127,7 +129,7 @@ function animate(body, armPivot, handPivot, endEffector, limits) {
     //currentLogs++;
     //}   
     
-    applyInverseKinematics(maxMousePosition, currentTargetDistance, armPivot, handPivot);
+    applyInverseKinematics(tempMousePosition, currentTargetDistance, armPivot, handPivot);
     handleKeyMovements(body, armPivot, handPivot, limits);
 }
 
@@ -204,6 +206,22 @@ export function displayMouseAndEndPositions(mousePos, endPosition) {
 
     const distanceElement2 = document.getElementById('current-endEffector-position');
     distanceElement2.textContent = `End Eff Pos: x: ${endPosition.x.toFixed(3)}, y: ${endPosition.y.toFixed(3)}`;
+}
+
+export function displayPivotPositions(armPivot, handPivot) {
+    armPivot.updateMatrixWorld();
+    handPivot.updateMatrixWorld();
+    
+    // Get world positions
+    const armPivotPosition = new THREE.Vector3();
+    const handPivotPosition = new THREE.Vector3();
+    
+    armPivot.getWorldPosition(armPivotPosition);
+    handPivot.getWorldPosition(handPivotPosition);
+
+    const distanceElement = document.getElementById('pivot-positions');
+    distanceElement.textContent = `Arm Pivot @: x: ${armPivotPosition.x.toFixed(3)}, y(z): ${armPivotPosition.y.toFixed(3)}
+    Hand Pivot @: x: ${handPivotPosition.x.toFixed(3)}, y(z): ${handPivotPosition.y.toFixed(3)}`;
 }
 
 // Get normalized mouse position (-1 to 1)
