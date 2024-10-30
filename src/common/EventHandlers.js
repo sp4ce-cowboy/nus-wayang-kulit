@@ -103,9 +103,9 @@ function animate(body, armPivot, handPivot, endEffector, limits) {
 
     var maxMousePosition = getMaxPossibleMousePosition(tempMousePosition, armPivot);
     
-    var manualMousePosition = maxMousePosition.clone();
-    manualMousePosition.setY(0.1);
-    manualMousePosition.setX(0.1);
+    //var manualMousePosition = maxMousePosition.clone();
+    //manualMousePosition.setY(0.1);
+    //manualMousePosition.setX(0.1);
     //manualMousePosition.setZ(0.1);
     //maxMousePosition = manualMousePosition;
 
@@ -129,7 +129,7 @@ function animate(body, armPivot, handPivot, endEffector, limits) {
     //currentLogs++;
     //}   
     
-    applyInverseKinematics(tempMousePosition, currentTargetDistance, armPivot, handPivot);
+    applyInverseKinematics(maxMousePosition, currentTargetDistance, armPivot, handPivot);
     handleKeyMovements(body, armPivot, handPivot, limits);
 }
 
@@ -314,10 +314,10 @@ export function getHandPivotToEndEffectorDistance(handPivot, endEffector) {
 export function getTargetToShoulderDistance(armPivot, targetPosition) {
     armPivot.updateMatrixWorld();
     
-    const armPosition = new THREE.Vector3();
-    armPivot.getWorldPosition(armPosition);
+    const armPivotPosition = new THREE.Vector3();
+    armPivot.getWorldPosition(armPivotPosition);
     
-    const distance = armPosition.distanceTo(targetPosition);
+    const distance = armPivotPosition.distanceTo(targetPosition);
     //const distance = get2DVectorDistance(armPosition, targetPosition);
     return distance;
 }

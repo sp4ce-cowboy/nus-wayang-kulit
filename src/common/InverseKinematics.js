@@ -15,10 +15,11 @@ export function applyInverseKinematics(customMousePosition, targetDistance, armP
 
     const offsetArmAngle = getOffsetAngleForArmPivot(customMousePosition, armPivot);
     const totalArmAngle = armAngle + offsetArmAngle + Math.PI / 2;
-    const totalHandAngle = handAngle + 3 * Math.PI / 4;
+    const totalHandAngle = handAngle + Math.PI; // + (3 * Math.PI / 4);
+    //const totalHandAngle = handAngle + armAngle + Math.PI;
 
     armPivot.rotation.y = totalArmAngle;
-    //handPivot.rotation.y = totalHandAngle;
+    handPivot.rotation.y = totalHandAngle;
 }
 
 export function calculateAngleWithCosineRule(leftA, rightB, oppositeC) {
