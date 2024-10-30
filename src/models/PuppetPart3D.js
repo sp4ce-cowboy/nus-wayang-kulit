@@ -82,6 +82,14 @@ export class PuppetPart3D {
             this.mesh.rotation.set(x, y, z);
         }
     }
+
+    getYRotation() {
+        if (this.mesh) {
+            return this.mesh.rotation.y;
+        } else {
+            return 0
+        }
+    }
     
     move(x, y, z) {
         if (this.mesh) {

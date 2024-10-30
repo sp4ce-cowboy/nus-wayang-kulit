@@ -7,18 +7,22 @@ import {
     handToEndDistance
 } from './EventHandlers.js';
 
-export function applyInverseKinematics(customMousePosition, targetDistance, armPivot, handPivot) {
+export function applyInverseKinematics(customMousePosition, targetDistance, armPivot, handPivot, body) {
+    //console.log('Initial state of body:', body);
     const armAngle = calculateAngleWithCosineRule(armToHandDistance, targetDistance, handToEndDistance);
     const handAngle = calculateAngleWithCosineRule(handToEndDistance, armToHandDistance, targetDistance);
 
-    displayAngle(armAngle, handAngle);
+
+    var bodyAngle = body.getYRotation();
+    displayAngle(armAngle, handAngle, bodyAngle);
 
     const offsetArmAngle = getOffsetAngleForArmPivot(customMousePosition, armPivot);
-    const totalArmAngle = armAngle + offsetArmAngle + Math.PI / 2;
+    const totalArmAngle = armAngle + offsetArmAngle + Math.PI / 2 - bodyAngle;
     const totalHandAngle = handAngle + Math.PI; // + (3 * Math.PI / 4);
     //const totalHandAngle = handAngle + armAngle + Math.PI;
 
     armPivot.rotation.y = totalArmAngle;
+    //armPivot.rotation.y -= bodyAngle;
     handPivot.rotation.y = totalHandAngle;
 }
 
@@ -56,9 +60,10 @@ export function getOffsetAngleForArmPivot(targetPosition, armPivot) {
 }
 
 
-export function displayAngle(armAngle, handAngle) {
+export function displayAngle(armAngle, handAngle, bodyAngle) {
     const distanceElement = document.getElementById('angle-values');
-    distanceElement.textContent = `Arm: ${armAngle.toFixed(3)}, Hand: ${handAngle.toFixed(3)}`;
+    distanceElement.textContent = `Arm: ${armAngle.toFixed(3)}, 
+    Hand: ${handAngle.toFixed(3)}, Body: ${bodyAngle.toFixed(3)}`;
 }
 
 

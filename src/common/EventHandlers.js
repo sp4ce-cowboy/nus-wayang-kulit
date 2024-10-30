@@ -129,7 +129,8 @@ function animate(body, armPivot, handPivot, endEffector, limits) {
     //currentLogs++;
     //}   
     
-    applyInverseKinematics(maxMousePosition, currentTargetDistance, armPivot, handPivot);
+    //console.log('Initial state of body:', body);
+    applyInverseKinematics(maxMousePosition, currentTargetDistance, armPivot, handPivot, body);
     handleKeyMovements(body, armPivot, handPivot, limits);
 }
 
