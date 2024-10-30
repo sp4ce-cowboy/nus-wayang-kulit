@@ -22,7 +22,8 @@
         "position": [-0.025, 0.01, 0.055],
         "rotation": [-1.7, -1.7, -0.2],
         "pivotPosition": [0, 0, 0.11],
-        "pivotRotation": [0, 0, 0]
+        "pivotRotation": [0, 0, 0],
+        "endEffectorPosition": [-0.02, 0, 0.11]
     },
     "limits": {
         "x": { "min": -10, "max": 10 },

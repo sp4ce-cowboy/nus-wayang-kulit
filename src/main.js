@@ -2,18 +2,21 @@ import * as THREE from 'three';
 import './style.css';
 import { PuppetPart3D } from './models/PuppetPart3D.js';
 import { setupEventListeners } from './common/EventHandlers.js';
+import { CCDIKSolver } from 'three/addons/animation/CCDIKSolver.js';
+
 import { 
     runTestSequence,
     runProlongedTestSequence,
     runArmTestSequence
 } from '../tests/Simulation.js';
+
 import { 
     IS_SIMULATION_ACTIVE,
     IS_MANUAL_PUPPET_INPUT,
     SHOW_HELPERS
 } from './common/ControlPanel.js';
 
-const currentTest = runArmTestSequence
+const currentTest = runTestSequence
 
 // Function to load the JSON configuration
 async function loadPuppetConfig(puppetName) {
@@ -35,13 +38,16 @@ async function init(puppetName) {
         
         const armPivot = new THREE.Group();
         const handPivot = new THREE.Group();
+        const endEffector = new THREE.Group();
         
         const armPivotHelper = new THREE.AxesHelper(0.1);
         const handPivotHelper = new THREE.AxesHelper(0.1);
+        const endEffectorHelper = new THREE.AxesHelper(0.1);
         
         if (SHOW_HELPERS) {
             armPivot.add(armPivotHelper);
             handPivot.add(handPivotHelper); 
+            endEffector.add(endEffectorHelper);
         }
         
         body.onReady = () => {
@@ -62,6 +68,9 @@ async function init(puppetName) {
                     handPivot.position.set(...config.hand.pivotPosition);
                     hand.setRotation(...config.hand.rotation);
                     armPivot.add(handPivot);
+                    
+                    endEffector.position.set(...config.hand.endEffectorPosition);
+                    handPivot.add(endEffector);  // Attach the endEffector to the hand
                 };
             };
         };
@@ -73,15 +82,13 @@ async function init(puppetName) {
             handPivot: { position: config.hand.pivotPosition, rotation: config.hand.pivotRotation }
         };
         
-        setupEventListeners(
-            { body, armPivot, handPivot, renderer, camera },
-            config.limits,
-            initialState);
-            
-        } catch (error) {
-            console.error(error);
-            alert(`Failed to load puppet: ${puppetName}`);
-        }
+        setupEventListeners({ body, armPivot, handPivot, endEffector, renderer, camera }, config.limits, initialState);
+        
+        
+    } catch (error) {
+        console.error(error);
+        alert(`Failed to load puppet: ${puppetName}`);
+    }
 }
 
 if (IS_MANUAL_PUPPET_INPUT) {
@@ -99,22 +106,24 @@ if (IS_MANUAL_PUPPET_INPUT) {
 }
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x333333);
+scene.background = new THREE.Color(0x000000);
 
-const ambientLight = new THREE.AmbientLight(0xffffff, 2.5); // Color and intensity
+const ambientLight = new THREE.AmbientLight(0xffffff, 2.5);
 scene.add(ambientLight);
 
-const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+const directionalLight = new THREE.DirectionalLight(0xfdf4dc, 1);
 directionalLight.position.set(10, 10, 10);
 scene.add(directionalLight);
-
-const renderer = new THREE.WebGLRenderer({ canvas: document.querySelector('.webgl') });
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.outputEncoding = THREE.sRGBEncoding;
 
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
 camera.position.set(0, 0, 1);
 scene.add(camera);
+
+const raycaster = new THREE.Raycaster(); // For future use, if needed
+
+const renderer = new THREE.WebGLRenderer({ canvas: document.querySelector('.webgl') });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.outputEncoding = THREE.sRGBEncoding;
 
 function animate() {
     requestAnimationFrame(animate);
