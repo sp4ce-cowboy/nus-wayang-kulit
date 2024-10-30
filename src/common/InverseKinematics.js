@@ -29,7 +29,12 @@ export function calculateAngleWithCosineRule(leftA, rightB, oppositeC) {
     cosAngleFraction = Math.min(1, Math.max(-1, cosAngleFraction));
 
     const angle = Math.acos(cosAngleFraction); // Angle in radians
-    console.log('Numerator:', numerator, 'Denominator:', denominator, 'Cosine:', cosAngleFraction, 'Angle (radians):', angle);
+
+    var currentLogs = 10;
+    if (currentLogs < 100) {
+        //console.log('Numerator:', numerator, 'Denominator:', denominator, 'Cosine:', cosAngleFraction, 'Angle (radians):', angle);
+        //currentLogs++;
+    }  
 
     return angle;
 }

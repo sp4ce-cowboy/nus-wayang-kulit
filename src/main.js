@@ -36,9 +36,9 @@ async function init(puppetName) {
         const arm = new PuppetPart3D(config.arm.path, config.arm.material, ...config.arm.scale);
         const hand = new PuppetPart3D(config.hand.path, config.hand.material, ...config.hand.scale);
         
-        const armPivot = new THREE.Bone();
-        const handPivot = new THREE.Bone();
-        const endEffector = new THREE.Bone();
+        const armPivot = new THREE.Group();
+        const handPivot = new THREE.Group();
+        const endEffector = new THREE.Group();
         
         const armPivotHelper = new THREE.AxesHelper(0.1);
         const handPivotHelper = new THREE.AxesHelper(0.1);
