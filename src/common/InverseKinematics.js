@@ -12,7 +12,6 @@ export function applyInverseKinematics(customMousePosition, targetDistance, armP
     const armAngle = calculateAngleWithCosineRule(armToHandDistance, targetDistance, handToEndDistance);
     const handAngle = calculateAngleWithCosineRule(handToEndDistance, armToHandDistance, targetDistance);
 
-
     var bodyAngle = body.getYRotation();
     displayAngle(armAngle, handAngle, bodyAngle);
 
@@ -22,7 +21,6 @@ export function applyInverseKinematics(customMousePosition, targetDistance, armP
     //const totalHandAngle = handAngle + armAngle + Math.PI;
 
     armPivot.rotation.y = totalArmAngle;
-    //armPivot.rotation.y -= bodyAngle;
     handPivot.rotation.y = totalHandAngle;
 }
 
