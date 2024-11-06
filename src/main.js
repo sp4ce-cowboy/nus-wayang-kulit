@@ -16,7 +16,7 @@ import {
     SHOW_HELPERS
 } from './common/ControlPanel.js';
 
-const currentTest = runTestSequence
+const currentTest = runProlongedTestSequence
 
 // Function to load the JSON configuration
 async function loadPuppetConfig(puppetName) {
@@ -83,7 +83,6 @@ async function init(puppetName) {
         };
         
         setupEventListeners({ body, armPivot, handPivot, endEffector, renderer, camera }, config.limits, initialState);
-        
         
     } catch (error) {
         console.error(error);
