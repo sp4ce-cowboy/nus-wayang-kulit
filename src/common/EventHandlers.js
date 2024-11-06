@@ -14,14 +14,20 @@
 } from './Constants.js';
 
 import { applyInverseKinematics } from './InverseKinematics.js';
-import { makeClipAdditive } from 'three/src/animation/AnimationUtils.js';
+import {
+    displayMouseCoordinates,
+    displayPivotPositions,
+    displayProjectedMouseCoordinates,
+    displayTargetDistance,
+    displayMouseAndEndPositions
+} from './InfoDisplay.js';
 
 // Track key states
 const keyState = {};
-export var mousePosition = new THREE.Vector3();
-export var armToEndDistance = 0;
-export var armToHandDistance = 0;
-export var handToEndDistance = 0;
+export let mousePosition = new THREE.Vector3(0.1,0.1,0.01);
+export let armToEndDistance = 0;
+export let armToHandDistance = 0;
+export let handToEndDistance = 0;
 
 // Setup event listeners for key tracking and actions
 export function setupEventListeners(
@@ -29,14 +35,13 @@ export function setupEventListeners(
 ) {
     // Track keydown events
     document.addEventListener('keydown', (event) => {
-        // Prevent default scrolling for arrow keys and others if necessary
         const keysToPrevent = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
         if (keysToPrevent.includes(event.key)) {
             event.preventDefault(); // Prevent default scroll behavior
         }
         
         if (event.key === 'x') {
-            resetAll(body, armPivot, handPivot, initialState); // Reset everything on 'q' press
+            resetAll(body, armPivot, handPivot, initialState);
         } else {
             keyState[event.key] = true; // Mark the key as pressed
         }
@@ -59,11 +64,7 @@ export function setupEventListeners(
         const coords = convertTo3DCoordinates(x, y, camera);
         
         mousePosition.copy(coords); // Store the 3D coordinates
-        //mousePosition.setY(-mousePosition.y)
         displayMouseCoordinates(mousePosition.x, mousePosition.y);
-
-        //console.log(`Mouse Position from EH: (${mousePosition.x}, ${mousePosition.y})`);
-        //endEffector.position.copy(coords);
     });
     
     // Start the animation loop
@@ -97,11 +98,10 @@ function animate(body, armPivot, handPivot, endEffector, limits) {
     armToHandDistance = getArmPivotToHandPivotDistance(armPivot, handPivot)
     handToEndDistance = getHandPivotToEndEffectorDistance(handPivot, endEffector)
     
-    var tempMousePosition = mousePosition.clone();
+    let tempMousePosition = mousePosition.clone();
     tempMousePosition.setZ(0.02);
-    //tempMousePosition.setY(-mousePosition.y);
 
-    var maxMousePosition = getMaxPossibleMousePosition(tempMousePosition, armPivot);
+    let maxMousePosition = getMaxPossibleMousePosition(tempMousePosition, armPivot);
     
     //var manualMousePosition = maxMousePosition.clone();
     //manualMousePosition.setY(0.1);
@@ -112,7 +112,7 @@ function animate(body, armPivot, handPivot, endEffector, limits) {
     displayAllVectorDistances(armToEndDistance, armToHandDistance, handToEndDistance);
     displayProjectedMouseCoordinates(maxMousePosition);
 
-    var currentTargetDistance = getTargetToShoulderDistance(armPivot, maxMousePosition);
+    let currentTargetDistance = getTargetToShoulderDistance(armPivot, maxMousePosition);
     displayTargetDistance(currentTargetDistance);
 
     const endEffectorPosition = new THREE.Vector3();
@@ -139,9 +139,11 @@ function handleKeyMovements(body, armPivot, handPivot, limits) {
     }
     if (keyState['.']) {
         body.move(0, 0, Math.min(limits.z.max, body.mesh.position.z + MOTION_THRESHOLD) - body.mesh.position.z);
+        console.log('Z position:', body.mesh.position.z);
     }
     if (keyState[',']) {
         body.move(0, 0, Math.max(limits.z.min, body.mesh.position.z - MOTION_THRESHOLD) - body.mesh.position.z);
+        console.log('Z position:', body.mesh.position.z);
     }
     if (keyState['a']) {
         body.rotate(0, 0, ROTATION_THRESHOLD);
@@ -173,45 +175,6 @@ function handleKeyMovements(body, armPivot, handPivot, limits) {
     if (keyState['j']) {
         handPivot.rotation.y += ROTATION_THRESHOLD;
     }
-}
-
-export function displayMouseCoordinates(x, y) {
-    const coordinatesElement = document.getElementById('mouse-coordinates');
-    coordinatesElement.textContent = `RMP x: ${x.toFixed(3)}, y: ${y.toFixed(3)}`;
-}
-
-export function displayProjectedMouseCoordinates(mousePos) {
-    const coordinatesElement = document.getElementById('projectedMousePosition');
-    coordinatesElement.textContent = `PMP x: ${mousePos.x.toFixed(3)}, y: ${mousePos.y.toFixed(3)}`;
-}
-
-export function displayTargetDistance(distance) {
-    const distanceElement = document.getElementById('target-distance');
-    distanceElement.textContent = `T_Distance: ${distance.toFixed(4)}`;
-}
-
-export function displayMouseAndEndPositions(mousePos, endPosition) {
-    const distanceElement = document.getElementById('current-mouse-position');
-    distanceElement.textContent = `Mouse Pos: x: ${mousePos.x.toFixed(3)}, y: ${mousePos.y.toFixed(3)}`;
-
-    const distanceElement2 = document.getElementById('current-endEffector-position');
-    distanceElement2.textContent = `End Eff Pos: x: ${endPosition.x.toFixed(3)}, y: ${endPosition.y.toFixed(3)}`;
-}
-
-export function displayPivotPositions(armPivot, handPivot) {
-    armPivot.updateMatrixWorld();
-    handPivot.updateMatrixWorld();
-    
-    // Get world positions
-    const armPivotPosition = new THREE.Vector3();
-    const handPivotPosition = new THREE.Vector3();
-    
-    armPivot.getWorldPosition(armPivotPosition);
-    handPivot.getWorldPosition(handPivotPosition);
-
-    const distanceElement = document.getElementById('pivot-positions');
-    distanceElement.textContent = `Arm Pivot @: x: ${armPivotPosition.x.toFixed(3)}, y(z): ${armPivotPosition.y.toFixed(3)}
-    Hand Pivot @: x: ${handPivotPosition.x.toFixed(3)}, y(z): ${handPivotPosition.y.toFixed(3)}`;
 }
 
 // Get normalized mouse position (-1 to 1)
@@ -281,8 +244,8 @@ export function getArmPivotToHandPivotDistance(armPivot, handPivot) {
     armPivot.getWorldPosition(armPosition);
     handPivot.getWorldPosition(handPosition);
     
-    const distance = armPosition.distanceTo(handPosition);
-    //const distance = get2DVectorDistance(armPosition, handPosition);
+    //const distance = armPosition.distanceTo(handPosition);
+    const distance = get2DVectorDistance(armPosition, handPosition);
     return distance;
 }
 
@@ -296,11 +259,12 @@ export function getHandPivotToEndEffectorDistance(handPivot, endEffector) {
     handPivot.getWorldPosition(handPosition);
     endEffector.getWorldPosition(endEffectorPosition);
     
-    const distance = handPosition.distanceTo(endEffectorPosition);
-    //const distance = get2DVectorDistance(handPosition, endEffectorPosition);
+    //const distance = handPosition.distanceTo(endEffectorPosition);
+    const distance = get2DVectorDistance(handPosition, endEffectorPosition);
     return distance;
 }
 
+/* The vector distance calculations here must be in 2D space */
 export function getTargetToShoulderDistance(armPivot, targetPosition) {
     armPivot.updateMatrixWorld();
     
@@ -308,7 +272,7 @@ export function getTargetToShoulderDistance(armPivot, targetPosition) {
     armPivot.getWorldPosition(armPivotPosition);
     
     const distance = armPivotPosition.distanceTo(targetPosition);
-    //const distance = get2DVectorDistance(armPosition, targetPosition);
+    //const distance = get2DVectorDistance(targetPosition, armPivotPosition);
     return distance;
 }
 

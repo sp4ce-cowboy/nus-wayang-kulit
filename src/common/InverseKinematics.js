@@ -51,9 +51,10 @@ export function getOffsetAngleForArmPivot(targetPosition, armPivot) {
     return angle
 }
 
-
 export function displayAngle(armAngle, handAngle, bodyAngle) {
     const distanceElement = document.getElementById('angle-values');
     distanceElement.textContent = `Arm: ${armAngle.toFixed(3)}, 
     Hand: ${handAngle.toFixed(3)}, Body: ${bodyAngle.toFixed(3)}`;
 }
+
+
