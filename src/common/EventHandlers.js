@@ -66,6 +66,15 @@ export function setupEventListeners(
         mousePosition.copy(coords); // Store the 3D coordinates
         displayMouseCoordinates(mousePosition.x, mousePosition.y);
     });
+
+    // Add support for touch events on mobile devices
+    renderer.domElement.addEventListener('touchmove', (event) => {
+        const { x, y } = getNormalizedMousePosition(event, renderer);
+        const coords = convertTo3DCoordinates(x, y, camera);
+        
+        mousePosition.copy(coords); // Store the 3D coordinates
+        displayMouseCoordinates(mousePosition.x, mousePosition.y);
+    });
     
     // Start the animation loop
     animate(body, armPivot, handPivot, endEffector, limits);
