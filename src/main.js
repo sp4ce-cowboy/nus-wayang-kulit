@@ -120,7 +120,7 @@ scene.add(camera);
 
 const raycaster = new THREE.Raycaster(); // For future use, if needed
 
-const renderer = new THREE.WebGLRenderer({ canvas: document.querySelector('.webgl') });
+const renderer = new THREE.WebGLRenderer({ canvas: document.querySelector('.webgl'), antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.outputEncoding = THREE.sRGBEncoding;
 

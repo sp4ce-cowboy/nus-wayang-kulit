@@ -110,6 +110,8 @@ function animate(body, armPivot, handPivot, endEffector, limits) {
     let tempMousePosition = mousePosition.clone();
     tempMousePosition.setZ(0.02);
 
+    // mousePosition = axios.get($URL)
+
     let maxMousePosition = getMaxPossibleMousePosition(tempMousePosition, armPivot);
     
     //var manualMousePosition = maxMousePosition.clone();
