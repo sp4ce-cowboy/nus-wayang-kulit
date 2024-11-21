@@ -25,7 +25,7 @@ import {
 
 // Track key states
 const keyState = {};
-export let mousePosition = new THREE.Vector3(0.1,0.1,0.01);
+export let mousePosition = new THREE.Vector3(0.1,0.1,0.02);
 export let armToEndDistance = 0;
 export let armToHandDistance = 0;
 export let handToEndDistance = 0;
@@ -108,7 +108,6 @@ async function fetchMousePosition() {
         mousePosition = mousePosFetch.clone();
     } catch (error) {
         console.error('Error fetching mouse position:', error);
-        //return new THREE.Vector3(0.1, 0.1, 0.02); // Fallback position
     }
 }
 
@@ -122,8 +121,8 @@ async function animate(body, armPivot, handPivot, endEffector, limits) {
     armToHandDistance = getArmPivotToHandPivotDistance(armPivot, handPivot)
     handToEndDistance = getHandPivotToEndEffectorDistance(handPivot, endEffector)
     
+    await fetchMousePosition();
     let tempMousePosition = mousePosition.clone();
-    //tempMousePosition = await fetchMousePosition();
     tempMousePosition.setZ(0.02);
 
     let maxMousePosition = getMaxPossibleMousePosition(tempMousePosition, armPivot);
@@ -133,7 +132,6 @@ async function animate(body, armPivot, handPivot, endEffector, limits) {
     //manualMousePosition.setX(0.1);
     //manualMousePosition.setZ(0.1);
     //maxMousePosition = manualMousePosition;
-
 
     displayAllVectorDistances(armToEndDistance, armToHandDistance, handToEndDistance);
     displayProjectedMouseCoordinates(maxMousePosition);
