@@ -100,7 +100,7 @@ if (IS_MANUAL_PUPPET_INPUT) {
     }
     
 } else {
-    const puppetName = 'puppet_01'; // Default puppet
+    const puppetName = 'puppet_02'; // Default puppet
     init(puppetName)
 }
 
@@ -120,7 +120,7 @@ scene.add(camera);
 
 const raycaster = new THREE.Raycaster(); // For future use, if needed
 
-const renderer = new THREE.WebGLRenderer({ canvas: document.querySelector('.webgl') });
+const renderer = new THREE.WebGLRenderer({ canvas: document.querySelector('.webgl'), antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.outputEncoding = THREE.sRGBEncoding;
 
