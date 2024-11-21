@@ -1,0 +1,33 @@
+{
+    "body": {
+        "path": "./assets/puppet_02/models/body/body_final_final.obj",
+        "material": "./assets/puppet_02/models/body/body_final_final.mtl",
+        "scale": [1, 1, 1],
+        "position": [0, 0, 0],
+        "rotation": [1.7, 0, 0]
+    },
+    "arm": {
+        "path": "./assets/puppet_02/models/arm/arm_final_2.obj",
+        "material": "./assets/puppet_02/models/arm/arm_final_2.mtl",
+        "scale": [1.5, 1.5, 1.5],
+        "position": [0, 0, 0.05],
+        "rotation": [0, 0, 0],
+        "pivotPosition": [-0.08, 0.01, -0.07],
+        "pivotRotation": [0, 0, 0]
+    },
+    "hand": {
+        "path": "./assets/puppet_02/models/hand/hand.obj",
+        "material": "./assets/puppet_02/models/hand/hand.mtl",
+        "scale": [1.5, 1.5, 1.5],
+        "position": [-0.01, 0.005, 0.08],
+        "rotation": [0, 0, 0],
+        "pivotPosition": [0, 0, 0.11],
+        "pivotRotation": [0, 0, 0],
+        "endEffectorPosition": [-0.00, 0, 0.11]
+    },
+    "limits": {
+        "x": { "min": -10, "max": 10 },
+        "y": { "min": -5, "max": 5 },
+        "z": { "min": -50, "max": 35 }
+    }
+}
