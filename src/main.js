@@ -100,7 +100,7 @@ if (IS_MANUAL_PUPPET_INPUT) {
     }
     
 } else {
-    const puppetName = 'puppet_01'; // Default puppet
+    const puppetName = 'puppet_02'; // Default puppet
     init(puppetName)
 }
 

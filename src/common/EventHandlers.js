@@ -5,6 +5,7 @@
  */
  
  import * as THREE from 'three';
+ import axios from 'axios';
  
  import {
     INVERSE_MOTION_THRESHOLD, 
@@ -59,22 +60,22 @@ export function setupEventListeners(
         camera.updateProjectionMatrix();
     });
     
-    renderer.domElement.addEventListener('mousemove', (event) => {
+    /*renderer.domElement.addEventListener('mousemove', (event) => {
         const { x, y } = getNormalizedMousePosition(event, renderer);
         const coords = convertTo3DCoordinates(x, y, camera);
         
         mousePosition.copy(coords); // Store the 3D coordinates
         displayMouseCoordinates(mousePosition.x, mousePosition.y);
-    });
+    });*/
 
     // Add support for touch events on mobile devices
-    renderer.domElement.addEventListener('touchmove', (event) => {
+    /*renderer.domElement.addEventListener('touchmove', (event) => {
         const { x, y } = getNormalizedMousePosition(event, renderer);
         const coords = convertTo3DCoordinates(x, y, camera);
         
         mousePosition.copy(coords); // Store the 3D coordinates
         displayMouseCoordinates(mousePosition.x, mousePosition.y);
-    });
+    });*/
     
     // Start the animation loop
     animate(body, armPivot, handPivot, endEffector, limits);
@@ -97,8 +98,22 @@ function resetAll(body, armPivot, handPivot, initialState) {
     handPivot.rotation.copy(new THREE.Euler(...initialState.handPivot.rotation));
 }
 
+async function fetchMousePosition() {
+    try {
+        const response = await axios.get('http://localhost:5000/detect'); // Replace $URL with your actual endpoint
+        const data = response.data;
+
+        // Assuming data contains the mouse position in the format { x: number, y: number, z: number }
+        let mousePosFetch  = new THREE.Vector3(data.smallArmTop.x, data.smallArmTop.y, 0.02);
+        mousePosition = mousePosFetch.clone();
+    } catch (error) {
+        console.error('Error fetching mouse position:', error);
+        //return new THREE.Vector3(0.1, 0.1, 0.02); // Fallback position
+    }
+}
+
 // Animation loop to apply movements and updates continuously
-function animate(body, armPivot, handPivot, endEffector, limits) {
+async function animate(body, armPivot, handPivot, endEffector, limits) {
     requestAnimationFrame(() => animate(body, armPivot, handPivot, endEffector, limits));
 
     displayPivotPositions(armPivot, handPivot);
@@ -108,9 +123,8 @@ function animate(body, armPivot, handPivot, endEffector, limits) {
     handToEndDistance = getHandPivotToEndEffectorDistance(handPivot, endEffector)
     
     let tempMousePosition = mousePosition.clone();
+    //tempMousePosition = await fetchMousePosition();
     tempMousePosition.setZ(0.02);
-
-    // mousePosition = axios.get($URL)
 
     let maxMousePosition = getMaxPossibleMousePosition(tempMousePosition, armPivot);
     
@@ -119,6 +133,7 @@ function animate(body, armPivot, handPivot, endEffector, limits) {
     //manualMousePosition.setX(0.1);
     //manualMousePosition.setZ(0.1);
     //maxMousePosition = manualMousePosition;
+
 
     displayAllVectorDistances(armToEndDistance, armToHandDistance, handToEndDistance);
     displayProjectedMouseCoordinates(maxMousePosition);
