@@ -27,7 +27,7 @@ async function loadPuppetConfig(puppetName) {
     return await response.json();
 }
 
-async function init(puppetName) {
+async function init(puppetName, maxAnisotropy) {
     try {
         const config = await loadPuppetConfig(puppetName);
         
@@ -35,6 +35,14 @@ async function init(puppetName) {
         const body = new PuppetPart3D(config.body.path, config.body.material, ...config.body.scale);
         const arm = new PuppetPart3D(config.arm.path, config.arm.material, ...config.arm.scale);
         const hand = new PuppetPart3D(config.hand.path, config.hand.material, ...config.hand.scale);
+
+        // Apply maximum anisotropy to textures if supported
+        [body, arm, hand].forEach(part => {
+            part.onTextureLoaded = texture => {
+                texture.anisotropy = maxAnisotropy;
+                texture.needsUpdate = true;
+            };
+        });
         
         const armPivot = new THREE.Group();
         const handPivot = new THREE.Group();
@@ -90,11 +98,23 @@ async function init(puppetName) {
     }
 }
 
+const raycaster = new THREE.Raycaster(); // For future use, if needed
+
+const renderer = new THREE.WebGLRenderer({ canvas: document.querySelector('.webgl'), precision: 'highp' });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 4));
+renderer.localClippingEnabled = true;
+
+//renderer.shadowMap.enabled = true;
+//renderer.shadowMap.type = THREE.PCFSoftShadowMap; // High-quality shadows
+const maxAnisotropy = renderer.capabilities.getMaxAnisotropy();
+
 if (IS_MANUAL_PUPPET_INPUT) {
     const puppetName = prompt("Enter the puppet name (e.g., 'puppet_01'):");
     
     if (puppetName) {
-        init(puppetName);
+        init(puppetName, maxAnisotropy);
     } else {
         alert('Puppet name is required!');
     }
@@ -118,11 +138,8 @@ const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerH
 camera.position.set(0, 0, 1);
 scene.add(camera);
 
-const raycaster = new THREE.Raycaster(); // For future use, if needed
 
-const renderer = new THREE.WebGLRenderer({ canvas: document.querySelector('.webgl'), antialias: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.outputEncoding = THREE.sRGBEncoding;
+
 
 function animate() {
     requestAnimationFrame(animate);

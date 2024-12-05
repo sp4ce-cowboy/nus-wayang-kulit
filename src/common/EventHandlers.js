@@ -100,7 +100,7 @@ function resetAll(body, armPivot, handPivot, initialState) {
 
 async function fetchMousePosition() {
     try {
-        const response = await axios.get('http://localhost:5000/detect'); // Replace $URL with your actual endpoint
+        const response = await axios.get('http://localhost:3000/detect'); // Replace $URL with your actual endpoint
         const data = response.data;
 
         // Assuming data contains the mouse position in the format { x: number, y: number, z: number }
