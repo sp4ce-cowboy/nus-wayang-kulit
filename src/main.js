@@ -127,10 +127,10 @@ if (IS_MANUAL_PUPPET_INPUT) {
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000000);
 
-const ambientLight = new THREE.AmbientLight(0xffffff, 2.5);
+const ambientLight = new THREE.AmbientLight(0xffffff, 2.7);
 scene.add(ambientLight);
 
-const directionalLight = new THREE.DirectionalLight(0xfdf4dc, 1);
+const directionalLight = new THREE.DirectionalLight(0xfdf4dc, 1.5);
 directionalLight.position.set(10, 10, 10);
 scene.add(directionalLight);
 
