@@ -60,13 +60,13 @@ export function setupEventListeners(
         camera.updateProjectionMatrix();
     });
     
-    /*renderer.domElement.addEventListener('mousemove', (event) => {
+    renderer.domElement.addEventListener('mousemove', (event) => {
         const { x, y } = getNormalizedMousePosition(event, renderer);
         const coords = convertTo3DCoordinates(x, y, camera);
         
         mousePosition.copy(coords); // Store the 3D coordinates
         displayMouseCoordinates(mousePosition.x, mousePosition.y);
-    });*/
+    });
 
     // Add support for touch events on mobile devices
     /*renderer.domElement.addEventListener('touchmove', (event) => {
@@ -121,7 +121,7 @@ async function animate(body, armPivot, handPivot, endEffector, limits) {
     armToHandDistance = getArmPivotToHandPivotDistance(armPivot, handPivot)
     handToEndDistance = getHandPivotToEndEffectorDistance(handPivot, endEffector)
     
-    await fetchMousePosition();
+    //await fetchMousePosition();
     let tempMousePosition = mousePosition.clone();
     tempMousePosition.setZ(0.02);
 
