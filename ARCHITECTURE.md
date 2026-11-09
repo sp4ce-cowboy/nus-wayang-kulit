@@ -36,7 +36,8 @@ repo is the interface.
 | | |
 |---|---|
 | Rendering | Three.js 0.167 (`WebGLRenderer`, high precision, max anisotropy), three-stdlib loaders |
-| Build | Vite 5.4 (ES modules), deployed on GitHub Pages |
+| Build | Vite 5.4 (ES modules), with a relative base; the bundles go to `static/` and the puppet `assets/` are copied in as-is |
+| Deployment | A GitHub Actions workflow builds and deploys to GitHub Pages on every push to `main` ([`deploy-pages.yml`](.github/workflows/deploy-pages.yml)) |
 | Animation | GSAP 3.12, `requestAnimationFrame` loop |
 | Assets | OBJ and MTL per part, GLB variants; a Python script to shift OBJ vertices |
 
