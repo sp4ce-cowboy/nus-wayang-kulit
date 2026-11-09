@@ -6,7 +6,11 @@
 An interactive prototype of [wayang kulit](https://en.wikipedia.org/wiki/Wayang_kulit), the Javanese and Malay shadow-puppet
 tradition: a 3D puppet built with [Three.js](https://threejs.org), with eight degrees of freedom and an inverse-kinematics arm, made at NUS.
 
-**[▶ Live demo](https://nus-cultural-heritage-2024.github.io/nus-wayang-kulit/)**
+**[▶ Live demo](https://sp4ce-cowboy.github.io/nus-wayang-kulit/)**
+
+📄 *Paper in preparation:* **Tangible interfaces for intangible cultural heritage**, for the
+[ACM Journal on Computing and Cultural Heritage (JOCCH)](https://dl.acm.org/journal/jocch), led by
+[Miguel Escobar Varela](https://orcid.org/0000-0001-8396-1664) ([NUS profile](https://discovery.nus.edu.sg/6387-miguel-escobar-varela)).
 
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES%20modules-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![Three.js](https://img.shields.io/badge/Three.js-0.167-000000?logo=threedotjs&logoColor=white)](https://threejs.org/docs/)
@@ -14,16 +18,17 @@ tradition: a 3D puppet built with [Three.js](https://threejs.org), with eight de
 [![GSAP](https://img.shields.io/badge/GSAP-3.12-88CE02?logo=greensock&logoColor=black)](https://gsap.com/docs/v3/)
 [![WebGL](https://img.shields.io/badge/WebGL-renderer-990000?logo=webgl&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API)
 [![Blender](https://img.shields.io/badge/3D%20models-OBJ%20%C2%B7%20GLB-F5792A?logo=blender&logoColor=white)](https://docs.blender.org/manual/en/latest/)
-[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-deployed-222222?logo=githubpages&logoColor=white)](https://nus-cultural-heritage-2024.github.io/nus-wayang-kulit/)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-deployed-222222?logo=githubpages&logoColor=white)](https://sp4ce-cowboy.github.io/nus-wayang-kulit/)
 
 ![Commits](https://img.shields.io/badge/commits-116-555?style=flat-square&logo=git&logoColor=white)
 ![Pull requests](https://img.shields.io/badge/merged%20PRs-16-555?style=flat-square&logo=github&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-1.6k%20lines-555?style=flat-square)
+[![WakaTime](https://img.shields.io/badge/WakaTime-35%20h-555?style=flat-square&logo=wakatime&logoColor=white)](https://wakatime.com)
 
 </div>
 
 > [!NOTE]
-> This README was written by [Claude](https://docs.anthropic.com/en/docs/claude-code) using the
+> This was written by [Claude](https://docs.anthropic.com/en/docs/claude-code) using my
 > [agentic-repo-analysis](https://github.com/sp4ce-cowboy/agentic-workflows) skill, from the
 > project's code, git history and documentation. The full user and developer guide is in
 > **[DOCUMENTATION.md](DOCUMENTATION.md)**, and the technical write-up in **[ARCHITECTURE.md](ARCHITECTURE.md)**.
@@ -39,8 +44,10 @@ tradition: a 3D puppet built with [Three.js](https://threejs.org), with eight de
 | **What** | A browser-based digital wayang kulit: a jointed 3D puppet (body, arm, hand) that can be moved, turned and posed in real time, with the arm solved by inverse kinematics |
 | **Where** | National University of Singapore, Centre for Computational Social Science and Humanities |
 | **When** | Aug 2024 – Feb 2025 |
-| **Team** | Project director [Miguel Escobar Varela](https://github.com/villaorlado); software engineers [C Mahidharah Rajendran](https://github.com/Mahidharah) and [Rubesh Suresh](https://github.com/sp4ce-cowboy) |
-| **Status** | Interface complete and deployed; a machine-vision model to drive the puppet from real sticks is the next step |
+| **My role** | Software engineer: the interface code end to end (Three.js scene and pivot hierarchy, the JSON puppet schema and loaders, the 8-DOF input system, inverse kinematics, simulation, deployment) and, together with the team, the 3D models |
+| **Team** | Project director [Miguel Escobar Varela](https://orcid.org/0000-0001-8396-1664) ([NUS](https://discovery.nus.edu.sg/6387-miguel-escobar-varela)); software engineers [C Mahidharah Rajendran](https://github.com/Mahidharah) and [Rubesh Suresh](https://github.com/sp4ce-cowboy) |
+| **Research** | A paper is in preparation for ACM JOCCH: *Tangible interfaces for intangible cultural heritage* |
+| **Status** | Interface complete and live; a machine-vision model to drive the puppet from real sticks is the next step |
 
 ## What it does
 
@@ -89,7 +96,7 @@ it, so the arm carries the hand and the body carries both. More in [ARCHITECTURE
 | **Test automation** | Simulated key-event sequences: [`Simulation.js`](https://github.com/sp4ce-cowboy/nus-wayang-kulit/blob/7be6ad25921de924c9ddddfc21979f39225b28c5/tests/Simulation.js) | — |
 | **3D modelling** | Puppet parts as OBJ/MTL and GLB, and a Python script to adjust OBJ files: [`assets/`](src/assets) | [Blender manual](https://docs.blender.org/manual/en/latest/) |
 | **Team workflow**<br><img alt="GitHub" src="https://img.shields.io/badge/GitHub-forking%20workflow-181717?logo=github&logoColor=white"> | A forking workflow with feature branches and 16 merged pull requests; milestones and a weekly log in [docs/](docs) | — |
-| **Deployment**<br><img alt="Vite" src="https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite&logoColor=white"> | Built with Vite and served on [GitHub Pages](https://nus-cultural-heritage-2024.github.io/nus-wayang-kulit/) | [Vite: static deploy](https://vite.dev/guide/static-deploy) |
+| **Deployment**<br><img alt="Vite" src="https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite&logoColor=white"> | Built with Vite and deployed to [GitHub Pages](https://sp4ce-cowboy.github.io/nus-wayang-kulit/) by a GitHub Actions workflow ([`deploy-pages.yml`](.github/workflows/deploy-pages.yml)) | [Vite: static deploy](https://vite.dev/guide/static-deploy) |
 
 ## By the numbers
 
@@ -109,3 +116,10 @@ npm run dev
 ```
 
 Controls, the control panel and how to calibrate a new puppet are in [DOCUMENTATION.md](DOCUMENTATION.md).
+
+## On my resume
+
+- Built a browser-based digital wayang kulit for NUS's Centre for Computational Social Science and Humanities: a jointed 3D shadow puppet in Three.js/WebGL with 8 degrees of freedom, concurrent keyboard control and a cursor-driven arm, deployed on GitHub Pages. A paper on it is in preparation for ACM JOCCH.
+- Implemented closed-form two-link inverse kinematics (the cosine rule, with reach clamping and compensation for the body's rotation) so the puppet's hand tracks the cursor in real time.
+- Designed a data-driven puppet schema (JSON models, pivots, end effectors, limits) and interchangeable OBJ/GLB part loaders, so new puppets load with no code changes. Added scripted input simulation to stand in for the planned machine-vision controller.
+- Shipped in 6 months through a forking workflow: 116 commits, 16 merged PRs, milestone docs, a full user and developer guide, and a CI deployment to GitHub Pages.
