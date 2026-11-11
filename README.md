@@ -8,12 +8,11 @@ tradition: a 3D puppet built with [Three.js](https://threejs.org), with eight de
 
 **[▶ Live demo](https://sp4ce-cowboy.github.io/nus-wayang-kulit/)**
 
-[![JavaScript](https://img.shields.io/badge/JavaScript-ES%20modules-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![Three.js](https://img.shields.io/badge/Three.js-0.167-000000?logo=threedotjs&logoColor=white)](https://threejs.org/docs/)
-[![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite&logoColor=white)](https://vite.dev/guide/)
-[![GSAP](https://img.shields.io/badge/GSAP-3.12-88CE02?logo=greensock&logoColor=black)](https://gsap.com/docs/v3/)
-[![WebGL](https://img.shields.io/badge/WebGL-renderer-990000?logo=webgl&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API)
-[![Blender](https://img.shields.io/badge/3D%20models-OBJ%20%C2%B7%20GLB-F5792A?logo=blender&logoColor=white)](https://docs.blender.org/manual/en/latest/)
+[![JavaScript](https://img.shields.io/badge/JavaScript-ES%20modules-F7DF1E?logo=javascript&logoColor=black)](https://github.com/sp4ce-cowboy/nus-wayang-kulit/blob/7be6ad25921de924c9ddddfc21979f39225b28c5/src/common/InverseKinematics.js)
+[![Three.js](https://img.shields.io/badge/Three.js-0.167-000000?logo=threedotjs&logoColor=white)](https://github.com/sp4ce-cowboy/nus-wayang-kulit/blob/7be6ad25921de924c9ddddfc21979f39225b28c5/src/main.js#L101-L154)
+[![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite&logoColor=white)](https://github.com/sp4ce-cowboy/nus-wayang-kulit/blob/7be6ad25921de924c9ddddfc21979f39225b28c5/src/package.json#L6-L13)
+[![WebGL](https://img.shields.io/badge/WebGL-renderer-990000?logo=webgl&logoColor=white)](https://github.com/sp4ce-cowboy/nus-wayang-kulit/blob/7be6ad25921de924c9ddddfc21979f39225b28c5/src/main.js#L103-L107)
+[![Blender](https://img.shields.io/badge/3D%20models-OBJ%20%C2%B7%20GLB-F5792A?logo=blender&logoColor=white)](https://github.com/sp4ce-cowboy/nus-wayang-kulit/tree/7be6ad25921de924c9ddddfc21979f39225b28c5/src/models)
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-deployed-222222?logo=githubpages&logoColor=white)](https://sp4ce-cowboy.github.io/nus-wayang-kulit/)
 [![Paper](https://img.shields.io/badge/paper-in%20preparation%20(ACM%20JOCCH)-0085CA?logo=acm&logoColor=white)](#publication)
 
