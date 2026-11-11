@@ -25,11 +25,11 @@ tradition: a 3D puppet built with [Three.js](https://threejs.org), with eight de
 
 > [!NOTE]
 > This consolidated README page was added by
-> [Claude](https://docs.anthropic.com/en/docs/claude-code) on 9 Nov 2026 using my
+> [Claude Opus 5.5](https://docs.anthropic.com/en/docs/claude-code) in Nov 2026 using my
 > [agentic-repo-analysis](https://github.com/sp4ce-cowboy/agentic-workflows) skill, from the
 > project's code, git history and documentation. The project itself is from Aug 2024 – Feb 2025. The
 > original README, the team's full user and developer guide, is in
-> **[DOCUMENTATION.md](DOCUMENTATION.md)**. The technical write-up is in
+> **[README-ORIGINAL.md](README-ORIGINAL.md)**. The technical write-up is in
 > **[ARCHITECTURE.md](ARCHITECTURE.md)**.
 
 <p align="center">
@@ -170,17 +170,9 @@ My hours per month                  Team commits per month (merges excluded)
 2025-02  █                   0.9    2025-02  █                     2
 ```
 
-## Getting started
-
-```sh
-cd src
-npm install
-npm run dev
-```
-
-Controls, the control panel and how to calibrate a new puppet are in [DOCUMENTATION.md](DOCUMENTATION.md).
-
 ## On my resume
+
+**Skills:** JavaScript (ES modules) · Three.js and WebGL · 3D maths (inverse kinematics, scene graphs) · data-driven design (JSON schemas) · real-time input handling · Vite · Git (forking workflow, pull requests) · research software
 
 - Built the interface of a browser-based digital wayang kulit for NUS's Centre for Computational Social Science and Humanities: a jointed 3D shadow puppet in Three.js/WebGL with 8 degrees of freedom, concurrent keyboard control and a cursor-driven arm. A paper on it is in preparation for ACM JOCCH.
 - Implemented closed-form two-link inverse kinematics (the cosine rule, clamped against floating-point error, with reach clamping and compensation for the body's rotation), so the puppet's hand tracks the cursor in real time inside a `requestAnimationFrame` loop.
@@ -189,4 +181,12 @@ Controls, the control panel and how to calibrate a new puppet are in [DOCUMENTAT
 - Built an input system that keeps a set of active keys and applies all of them every frame, so moves and turns combine in 9 directions, clamped to the puppet's limits and resettable to a stored initial state; added scripted input simulation to stand in for the planned machine-vision controller.
 - Delivered over 6 months in a forking workflow with feature branches, 16 reviewed pull requests, milestones and a weekly log, alongside a second developer, a machine-vision engineer and two faculty advisers.
 
-**Skills:** JavaScript (ES modules) · Three.js and WebGL · 3D maths (inverse kinematics, scene graphs) · data-driven design (JSON schemas) · real-time input handling · Vite · Git (forking workflow, pull requests) · research software
+## Getting started
+
+```sh
+cd src
+npm install
+npm run dev
+```
+
+Controls, the control panel and how to calibrate a new puppet are in [README-ORIGINAL.md](README-ORIGINAL.md).
