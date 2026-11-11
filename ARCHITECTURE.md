@@ -1,5 +1,10 @@
 # Digital Wayang Kulit: architecture
 
+> [!NOTE]
+> This architecture write-up was added by [Claude](https://docs.anthropic.com/en/docs/claude-code)
+> using my [agentic-repo-analysis](https://github.com/sp4ce-cowboy/agentic-workflows) skill, from the
+> project's code, git history and documentation.
+
 A technical write-up of the digital wayang kulit interface (NUS, Aug 2024 – Feb 2025),
 from the code, the git history and the project docs (milestones, the weekly log, the IK
 notes). Back to the [README](README.md).
