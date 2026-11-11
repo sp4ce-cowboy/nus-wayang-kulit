@@ -24,10 +24,12 @@ tradition: a 3D puppet built with [Three.js](https://threejs.org), with eight de
 </div>
 
 > [!NOTE]
-> This consolidated README page was added by [Claude](https://docs.anthropic.com/en/docs/claude-code)
-> using my [agentic-repo-analysis](https://github.com/sp4ce-cowboy/agentic-workflows) skill, from the
-> project's code, git history and documentation. The original README, the team's full user and
-> developer guide, is in **[DOCUMENTATION.md](DOCUMENTATION.md)**. The technical write-up is in
+> This consolidated README page was added by
+> [Claude](https://docs.anthropic.com/en/docs/claude-code) on 9 Nov 2026 using my
+> [agentic-repo-analysis](https://github.com/sp4ce-cowboy/agentic-workflows) skill, from the
+> project's code, git history and documentation. The project itself is from Aug 2024 – Feb 2025. The
+> original README, the team's full user and developer guide, is in
+> **[DOCUMENTATION.md](DOCUMENTATION.md)**. The technical write-up is in
 > **[ARCHITECTURE.md](ARCHITECTURE.md)**.
 
 <p align="center">
@@ -140,16 +142,33 @@ For updates on the paper, contact Prof. Miguel Escobar Varela ([NUS profile](htt
 | **Test automation** | Simulated key-event sequences: [`Simulation.js`](https://github.com/sp4ce-cowboy/nus-wayang-kulit/blob/7be6ad25921de924c9ddddfc21979f39225b28c5/tests/Simulation.js) | — |
 | **3D modelling** | Puppet parts as OBJ/MTL and GLB, and a Python script to adjust OBJ files: [`assets/`](src/assets) | [Blender manual](https://docs.blender.org/manual/en/latest/) |
 | **Team workflow**<br><img alt="GitHub" src="https://img.shields.io/badge/GitHub-forking%20workflow-181717?logo=github&logoColor=white"> | A forking workflow with feature branches and 16 merged pull requests; milestones and a weekly log in [docs/](docs) | — |
-| **Deployment**<br><img alt="Vite" src="https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite&logoColor=white"> | Built with Vite and deployed to [GitHub Pages](https://sp4ce-cowboy.github.io/nus-wayang-kulit/) by a GitHub Actions workflow ([`deploy-pages.yml`](.github/workflows/deploy-pages.yml)) | [Vite: static deploy](https://vite.dev/guide/static-deploy) |
+| **Deployment**<br><img alt="Vite" src="https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite&logoColor=white"> | Built and served with Vite. The live demo on [GitHub Pages](https://sp4ce-cowboy.github.io/nus-wayang-kulit/) is deployed by a GitHub Actions workflow ([`deploy-pages.yml`](.github/workflows/deploy-pages.yml)) added with this page in 2026 | [Vite: static deploy](https://vite.dev/guide/static-deploy) |
 
-## By the numbers
+## Coding stats
+
+My time from [WakaTime](https://wakatime.com); the team's commits from git.
 
 | | |
 |---|---|
-| Period | 15 Aug 2024 – 21 Feb 2025 |
-| Commits | 116 (16 merged pull requests, 11 branches) |
-| Code | about 1,600 lines of JavaScript; 680 lines of docs |
-| Puppets | 2 configured puppets, each with body, arm and hand models |
+| **Time** | **35 h** of coding, over 35 days |
+| **Period** | 15 Aug 2024 – 21 Feb 2025 |
+| **Peak week** | **13.7 h** (21 – 27 Oct 2024) |
+| **Peak day** | **5.2 h** (Wed 30 Oct 2024) |
+| **Longest push** | **14.1 h** without a break longer than 3 h (Wed 30 Oct 09:35 → 23:40), 5.2 h of it coding |
+| **Commits** | 116 (16 merged pull requests, 11 branches) |
+| **Code** | about 1,600 lines of JavaScript; 680 lines of docs |
+| **Puppets** | 2 configured puppets, each with body, arm and hand models |
+
+```text
+My hours per month                  Team commits per month (merges excluded)
+2024-08  ███                 4.5    2024-08  █████                18
+2024-09  █                   0.6    2024-09  █                     2
+2024-10  ████████████████   23.3    2024-10  ████████████████     54
+2024-11  ████                5.6    2024-11  ███                   9
+2024-12  █                   0.3    2024-12                        0
+2025-01                      0.0    2025-01  █                     1
+2025-02  █                   0.9    2025-02  █                     2
+```
 
 ## Getting started
 
@@ -163,7 +182,11 @@ Controls, the control panel and how to calibrate a new puppet are in [DOCUMENTAT
 
 ## On my resume
 
-- Built a browser-based digital wayang kulit for NUS's Centre for Computational Social Science and Humanities: a jointed 3D shadow puppet in Three.js/WebGL with 8 degrees of freedom, concurrent keyboard control and a cursor-driven arm, deployed on GitHub Pages. A paper on it is in preparation for ACM JOCCH.
-- Implemented closed-form two-link inverse kinematics (the cosine rule, with reach clamping and compensation for the body's rotation) so the puppet's hand tracks the cursor in real time.
-- Designed a data-driven puppet schema (JSON models, pivots, end effectors, limits) and interchangeable OBJ/GLB part loaders, so new puppets load with no code changes. Added scripted input simulation to stand in for the planned machine-vision controller.
-- Set up continuous deployment with GitHub Actions to build the Vite app, bundle its runtime 3D assets and publish it on GitHub Pages. Ran the 6-month project through a forking workflow with 16 reviewed pull requests.
+- Built the interface of a browser-based digital wayang kulit for NUS's Centre for Computational Social Science and Humanities: a jointed 3D shadow puppet in Three.js/WebGL with 8 degrees of freedom, concurrent keyboard control and a cursor-driven arm. A paper on it is in preparation for ACM JOCCH.
+- Implemented closed-form two-link inverse kinematics (the cosine rule, clamped against floating-point error, with reach clamping and compensation for the body's rotation), so the puppet's hand tracks the cursor in real time inside a `requestAnimationFrame` loop.
+- Modelled the puppet as a Three.js scene graph of pivot groups (body → arm pivot → hand pivot → end effector), so each joint rotates about its real pivot and children inherit their parents' motion with no manual transform maths.
+- Designed a data-driven puppet schema (JSON: models, materials, transforms, joint pivots, end effectors, movement limits) and interchangeable OBJ/MTL and glTF (GLB) part loaders behind one interface, so a new puppet loads with no code changes; 2 puppets are configured.
+- Built an input system that keeps a set of active keys and applies all of them every frame, so moves and turns combine in 9 directions, clamped to the puppet's limits and resettable to a stored initial state; added scripted input simulation to stand in for the planned machine-vision controller.
+- Delivered over 6 months in a forking workflow with feature branches, 16 reviewed pull requests, milestones and a weekly log, alongside a second developer, a machine-vision engineer and two faculty advisers.
+
+**Skills:** JavaScript (ES modules) · Three.js and WebGL · 3D maths (inverse kinematics, scene graphs) · data-driven design (JSON schemas) · real-time input handling · Vite · Git (forking workflow, pull requests) · research software
