@@ -130,7 +130,7 @@ For updates on the paper, contact Prof. Miguel Escobar Varela ([NUS profile](htt
 
 ## Skills shown
 
-| Skill | Where it shows | Docs |
+| Skill | Where it shows (click the links for the code) | Docs |
 |---|---|---|
 | **3D graphics on the web**<br><img alt="Three.js" src="https://img.shields.io/badge/Three.js-0.167-000000?logo=threedotjs&logoColor=white"> | Scene, lights, camera, renderer and animation loop: [`main.js`](https://github.com/sp4ce-cowboy/nus-wayang-kulit/blob/7be6ad25921de924c9ddddfc21979f39225b28c5/src/main.js#L101-L154) | [Three.js docs](https://threejs.org/docs/) |
 | **Inverse kinematics** | A two-link solver using the cosine rule, with a reach clamp: [`InverseKinematics.js`](https://github.com/sp4ce-cowboy/nus-wayang-kulit/blob/7be6ad25921de924c9ddddfc21979f39225b28c5/src/common/InverseKinematics.js#L10-L54), [`getMaxPossibleMousePosition`](https://github.com/sp4ce-cowboy/nus-wayang-kulit/blob/7be6ad25921de924c9ddddfc21979f39225b28c5/src/common/EventHandlers.js#L303-L332) | [Two-link IK](https://en.wikipedia.org/wiki/Inverse_kinematics) |
