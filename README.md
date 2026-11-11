@@ -43,7 +43,7 @@ tradition: a 3D puppet built with [Three.js](https://threejs.org), with eight de
 | **What** | A browser-based digital wayang kulit: a jointed 3D puppet (body, arm, hand) that can be moved, turned and posed in real time, with the arm solved by inverse kinematics |
 | **Where** | National University of Singapore, Centre for Computational Social Science and Humanities |
 | **When** | Aug 2024 – Feb 2025 |
-| **My role** | Software engineer: the interface code end to end (Three.js scene and pivot hierarchy, the JSON puppet schema and loaders, the 8-DOF input system, inverse kinematics, simulation, deployment) and, together with the team, the 3D models |
+| **My role** | Software engineer: the interface code end to end (Three.js scene and pivot hierarchy, the JSON puppet schema and loaders, the 8-DOF input system, inverse kinematics, simulation, the Vite set-up) and, together with the team, the 3D models |
 | **Team** | Project director [Miguel Escobar Varela](https://orcid.org/0000-0001-8396-1664); advisor [Ganesh Neelakanta Iyer](https://www.comp.nus.edu.sg/cs/people/gni); software engineers [C Mahidharah Rajendran](https://github.com/Mahidharah) and [Rubesh Suresh](https://github.com/sp4ce-cowboy); machine vision by [Manav Kamlesh Chouhan](https://github.com/manavchouhan115) |
 | **Research** | A paper is in preparation for the ACM Journal on Computing and Cultural Heritage: see [Publication](#publication) |
 | **Status** | Interface complete and live; a machine-vision model to drive the puppet from real sticks is the next step |
