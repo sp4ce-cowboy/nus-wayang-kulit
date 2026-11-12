@@ -8,12 +8,12 @@ tradition: a 3D puppet built with [Three.js](https://threejs.org), with eight de
 
 **[▶ Live demo](https://sp4ce-cowboy.github.io/nus-wayang-kulit/)**
 
-[![JavaScript](https://img.shields.io/badge/JavaScript-ES%20modules-F7DF1E?logo=javascript&logoColor=black)](https://github.com/sp4ce-cowboy/nus-wayang-kulit/blob/7be6ad25921de924c9ddddfc21979f39225b28c5/src/common/InverseKinematics.js)
+[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)](https://github.com/sp4ce-cowboy/nus-wayang-kulit/blob/7be6ad25921de924c9ddddfc21979f39225b28c5/src/common/InverseKinematics.js)
 [![Three.js](https://img.shields.io/badge/Three.js-0.167-000000?logo=threedotjs&logoColor=white)](https://github.com/sp4ce-cowboy/nus-wayang-kulit/blob/7be6ad25921de924c9ddddfc21979f39225b28c5/src/main.js#L101-L154)
 [![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite&logoColor=white)](https://github.com/sp4ce-cowboy/nus-wayang-kulit/blob/7be6ad25921de924c9ddddfc21979f39225b28c5/src/package.json#L6-L13)
-[![WebGL](https://img.shields.io/badge/WebGL-renderer-990000?logo=webgl&logoColor=white)](https://github.com/sp4ce-cowboy/nus-wayang-kulit/blob/7be6ad25921de924c9ddddfc21979f39225b28c5/src/main.js#L103-L107)
-[![Blender](https://img.shields.io/badge/3D%20models-OBJ%20%C2%B7%20GLB-F5792A?logo=blender&logoColor=white)](https://github.com/sp4ce-cowboy/nus-wayang-kulit/tree/7be6ad25921de924c9ddddfc21979f39225b28c5/src/models)
-[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-deployed-222222?logo=githubpages&logoColor=white)](https://sp4ce-cowboy.github.io/nus-wayang-kulit/)
+[![WebGL](https://img.shields.io/badge/WebGL-990000?logo=webgl&logoColor=white)](https://github.com/sp4ce-cowboy/nus-wayang-kulit/blob/7be6ad25921de924c9ddddfc21979f39225b28c5/src/main.js#L103-L107)
+[![Blender](https://img.shields.io/badge/3D%20models-F5792A?logo=blender&logoColor=white)](https://github.com/sp4ce-cowboy/nus-wayang-kulit/tree/7be6ad25921de924c9ddddfc21979f39225b28c5/src/models)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-222222?logo=githubpages&logoColor=white)](https://sp4ce-cowboy.github.io/nus-wayang-kulit/)
 [![Paper](https://img.shields.io/badge/paper-in%20preparation%20(ACM%20JOCCH)-0085CA?logo=acm&logoColor=white)](#publication)
 
 ![Commits](https://img.shields.io/badge/commits-116-555?style=flat-square&logo=git&logoColor=white)
@@ -141,7 +141,7 @@ For updates on the paper, contact Prof. Miguel Escobar Varela ([NUS profile](htt
 | **Data-driven design** | Each puppet defined in JSON (models, pivots, end effector, limits): [`puppet_01.json`](https://github.com/sp4ce-cowboy/nus-wayang-kulit/blob/7be6ad25921de924c9ddddfc21979f39225b28c5/src/assets/puppet_01/puppet_01.json) | — |
 | **Test automation** | Simulated key-event sequences: [`Simulation.js`](https://github.com/sp4ce-cowboy/nus-wayang-kulit/blob/7be6ad25921de924c9ddddfc21979f39225b28c5/tests/Simulation.js) | — |
 | **3D modelling** | Puppet parts as OBJ/MTL and GLB, and a Python script to adjust OBJ files: [`assets/`](src/assets) | [Blender manual](https://docs.blender.org/manual/en/latest/) |
-| **Team workflow**<br><img alt="GitHub" src="https://img.shields.io/badge/GitHub-forking%20workflow-181717?logo=github&logoColor=white"> | A forking workflow with feature branches and 16 merged pull requests; milestones and a weekly log in [docs/](docs) | — |
+| **Team workflow**<br><img alt="GitHub" src="https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white"> | A forking workflow with feature branches and 16 merged pull requests; milestones and a weekly log in [docs/](docs) | — |
 | **Deployment**<br><img alt="Vite" src="https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite&logoColor=white"> | Built and served with Vite. The live demo on [GitHub Pages](https://sp4ce-cowboy.github.io/nus-wayang-kulit/) is deployed by a GitHub Actions workflow ([`deploy-pages.yml`](.github/workflows/deploy-pages.yml)) added with this page in 2026 | [Vite: static deploy](https://vite.dev/guide/static-deploy) |
 
 ## Coding stats
