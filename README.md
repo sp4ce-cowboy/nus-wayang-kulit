@@ -129,7 +129,7 @@ puppets to two-dimensional images, and that tactile knowledge is lost.
 
 For updates on the paper, contact Prof. Miguel Escobar Varela ([NUS profile](https://discovery.nus.edu.sg/6387-miguel-escobar-varela), m.escobar@nus.edu.sg).
 
-## Skills shown
+## Skills covered
 
 | Skill | Where it shows (click the links for the code) | Docs |
 |---|---|---|
